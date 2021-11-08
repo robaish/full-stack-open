@@ -1,0 +1,82 @@
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.wrapper {
+  position: relative;
+  width: 90vw;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding-top: 80px;
+}
+
+/* Form */
+.form-item {
+  display: flex;
+  justify-content: space-between;
+  max-width: 300px;
+  padding: 2px 0;
+}
+
+.form-button {
+  display: flex;
+  max-width: 300px;
+  justify-content: flex-end;
+  padding-top: 2px;
+}
+
+/* Contact list */
+.contact-list {
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+  max-width: 300px;
+}
+
+.contact-list-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 0;
+}
+
+/* Notifications */
+.notification {
+  position: absolute;
+  top: 20px;
+  width: 100%;
+  padding: 0.5em;
+  border-radius: 0.25em;
+}
+
+.success {
+  background: #E0F3EF;
+  color: #005538;
+}
+
+.warning {
+  background: #FDF7DE;
+  color: #EDB600;
+}
+
+.danger {
+  background: #FBE9E7;
+  color: #F24E1E;
+}
