@@ -54,8 +54,6 @@ const App = () => {
         .update(person.id, updatedPerson)
         .then(returnedContact => {
           setPersons(persons.map(p => {
-            console.log(p.id);
-            console.log(person.id);
             return p.id !== person.id ? p : returnedContact;
           }));
           setNewName('');
@@ -64,6 +62,7 @@ const App = () => {
           setTimeout(() => setNotification({state: null}), 5000);
         })
         .catch(error => {
+          console.log(error, error.message);
           setNotification({state: 'danger', message: `The information of ${newName} has already been deleted.`});
           setTimeout(() => setNotification({state: null}), 5000)
           setPersons(persons.filter(p => p.id !== person.id));
