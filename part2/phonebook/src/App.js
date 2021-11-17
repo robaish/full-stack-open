@@ -74,8 +74,9 @@ const App = () => {
   // Remove contact
   const removePerson = event => {
     event.preventDefault();
-    const deleteId = parseInt(event.target.value);
+    const deleteId = event.target.value;
     const deleteName = persons.find(p => p.id === deleteId).name;
+    console.log(deleteId, persons);
     
     if (window.confirm(`Do you really want to remove ${deleteName}?`)) {
     personDB
