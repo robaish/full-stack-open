@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import personDB from './services/personDB';
 import PersonForm from './components/PersonForm';
 import Filter from './components/Filter';
 import PersonList from './components/PersonList';
 import Notification from './components/Notification';
-import { DH_NOT_SUITABLE_GENERATOR } from 'constants';
 
 const App = () => {
   const [ persons, setPersons ] = useState([]);
@@ -61,7 +60,6 @@ const App = () => {
       personDB
         .update(person.id, newInfo)
         .then(createdPerson => {
-          console.log(createdPerson);
           if (createdPerson) {
             setPersons(persons.map(p => {
               return p.id !== person.id ? p : createdPerson;
