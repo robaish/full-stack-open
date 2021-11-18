@@ -4,6 +4,7 @@ import PersonForm from './components/PersonForm';
 import Filter from './components/Filter';
 import PersonList from './components/PersonList';
 import Notification from './components/Notification';
+import { DH_NOT_SUITABLE_GENERATOR } from 'constants';
 
 const App = () => {
   const [ persons, setPersons ] = useState([]);
@@ -30,17 +31,22 @@ const App = () => {
       name: newName,
       number: newNumber, 
     }
-
+    
     persons.some(p => p.name === newName)
     ? updatePerson(newName, newNumber)
     : personDB
         .create(person)
-        .then(returnedContact => {
-          setPersons(persons.concat(returnedContact));
+        .then(createdPerson => {
+          setPersons(persons.concat(createdPerson));
           setNewName('');
           setNewNumber('');
-          setNotification({state: 'success', message: `Added ${returnedContact.name} 👍`});
+          setNotification({state: 'success', message: `Added ${createdPerson.name} 👍`});
           setTimeout(() => setNotification({state: null}), 5000);
+        })
+        .catch(error => {
+          setNotification({state: 'danger', message: `${error.response.data.error}`})
+          setTimeout(() => setNotification({state: null}), 5000)
+          setPersons(persons.filter(p => p.id !== person.id));
         })  
   }
 
@@ -48,24 +54,33 @@ const App = () => {
   const updatePerson = (newName, newNumber) => {
     if (window.confirm(`${newName} is already added to phonebook. Replace the old number with a new one?`)) {
       const person = persons.find(p => p.name === newName);
-      const updatedPerson = {...person, number: newNumber}
+      const newInfo = {...person, number: newNumber}
+
+      console.log(person.id, newInfo)
       
       personDB
-        .update(person.id, updatedPerson)
-        .then(returnedContact => {
-          setPersons(persons.map(p => {
-            return p.id !== person.id ? p : returnedContact;
-          }));
+        .update(person.id, newInfo)
+        .then(createdPerson => {
+          console.log(createdPerson);
+          if (createdPerson) {
+            setPersons(persons.map(p => {
+              return p.id !== person.id ? p : createdPerson;
+            }));
+          }
           setNewName('');
           setNewNumber('');
-          setNotification({state: 'success', message: `Updated ${returnedContact.name}'s info 👍`});
+          setNotification({state: 'success', message: `Updated ${createdPerson.name}'s info 👍`});
           setTimeout(() => setNotification({state: null}), 5000);
         })
         .catch(error => {
-          console.log(error, error.message);
-          setNotification({state: 'danger', message: `The information of ${newName} has already been deleted.`});
-          setTimeout(() => setNotification({state: null}), 5000)
-          setPersons(persons.filter(p => p.id !== person.id));
+          if (error.response !== undefined && error.response.data.error.includes('Validation')) {
+            setNotification({state: 'danger', message: `${error.response.data.error}`})
+          } else {
+            // If user has been deleted in another browser:
+            setNotification({state: 'danger', message: `The information of ${newName} has already been deleted.`});
+            setPersons(persons.filter(p => p.id !== person.id));
+          }
+          setTimeout(() => setNotification({state: null}), 5000);
         });
     }
   }
