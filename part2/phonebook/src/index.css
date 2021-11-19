@@ -1,3 +1,9 @@
+:root {
+  --color-bg--primary: #1A2732;
+  --color-bg--secondary: #29333E;
+  --color-primary: #6E63E6;
+}
+
 html {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -18,29 +24,65 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: white;
+  background-color: var(--color-bg--primary);
+  overflow-y: auto;
 }
 
 .wrapper {
-  position: relative;
+  margin: 0 auto;
+  margin-top: 10vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-bg--primary);
+  overflow-y: auto;
+}
+
+.container {
   width: 90vw;
   max-width: 1440px;
-  margin: 0 auto;
-  padding-top: 80px;
+  min-height: 90vh;
+  padding: 40px;
+  background-color: var(--color-bg--secondary);
+  border-radius: 1.5rem 1.5rem 0 0;
+}
+
+/* Filter */
+.filter {
+  width: 100%;
+  max-width: 400px;
 }
 
 /* Form */
 .form-item {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  max-width: 300px;
-  padding: 2px 0;
+}
+
+label {
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+input {
+  height: 2rem;
+  width: 100%;
+  border: none;
+  border-radius: 0.5em;
+  padding: 0px 10px;
+  margin-bottom: 1rem;
+  font-size: 16px;
+  max-width: 400px;
 }
 
 .form-button {
   display: flex;
-  max-width: 300px;
+  max-width: 400px;
   justify-content: flex-end;
-  padding-top: 2px;
 }
 
 /* Contact list */
@@ -48,22 +90,27 @@ body {
   list-style-type: none;
   padding: 0;
   width: 100%;
-  max-width: 300px;
+  max-width: 400px;
 }
 
 .contact-list-item {
   display: flex;
   justify-content: space-between;
-  padding: 2px 0;
+  align-items: center;
+  padding: 0.25rem 0;
+  font-size: 1rem;
 }
 
 /* Notifications */
+
 .notification {
   position: absolute;
   top: 20px;
-  width: 100%;
+  width: 90vw;
+  max-width: 1440px;
   padding: 0.5em;
-  border-radius: 0.25em;
+  border-radius: 0.5em;
+  font-size: 1rem;
 }
 
 .success {
@@ -79,4 +126,58 @@ body {
 .danger {
   background: #FBE9E7;
   color: #F24E1E;
+}
+
+div {
+  font-size: 20px;
+}
+
+/* Typography */
+h1, h2 {
+  color: white;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+h2 {
+  font-size: 1.5rem;
+}
+
+/* Buttons */
+button {
+  display: inline-block;
+  border: none;
+  border-radius: 3rem;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 125%;
+  color: #fff;
+}
+
+button:hover {
+  cursor: pointer;
+  transform: scale(1.03);
+}
+
+button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.btn--primary {
+  background-color: var(--color-primary);
+  padding: 8px 12px;
+  min-width: 90px;
+}
+
+.btn--primary:hover {
+  background-color: #7A6EFF;
+}
+
+.btn--secondary {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  font-size: 0.8rem;
+  padding: 4px 8px;
 }

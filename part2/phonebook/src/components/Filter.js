@@ -2,8 +2,9 @@ import React from "react";
 
 const Filter = (props) => {
   return (
-    <div>
-      Type name to filter: <input onChange={props.filterByName} />
+    <div className="filter">
+      <h2>Type name to filter</h2>
+      <input onChange={props.filterByName} />
     </div>
   );
 

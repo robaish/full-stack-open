@@ -125,22 +125,26 @@ const App = () => {
 
   return (
     <div className="wrapper">
-      <Notification notification={notification} />
-      <h1>Phonebook</h1>
-      <Filter filterByName={filterByName} />
-      <h2>Add / update contacts</h2>
-      <PersonForm
-        handleNameChange={handleNameChange}
-        handleNumberChange={handleNumberChange}
-        addPerson={addPerson}
-        nameValue={newName}
-        numberValue={newNumber}
-      />
-      <h2>All contacts</h2>
-      <PersonList
-        filteredPersons={filteredPersons} 
-        removePerson={removePerson}
-      />
+      <Notification className="notification-bar" notification={notification} />
+      <div>
+        <h1>Phonebook</h1>
+      </div>
+      <div className="container">
+        <Filter filterByName={filterByName} />
+        <h2>Add / update contacts</h2>
+        <PersonForm
+          handleNameChange={handleNameChange}
+          handleNumberChange={handleNumberChange}
+          addPerson={addPerson}
+          nameValue={newName}
+          numberValue={newNumber}
+        />
+        <h2>All contacts</h2>
+        <PersonList
+          filteredPersons={filteredPersons} 
+          removePerson={removePerson}
+        />
+      </div>
     </div>
   );
 }
