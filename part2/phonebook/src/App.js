@@ -126,12 +126,11 @@ const App = () => {
   return (
     <div className="wrapper">
       <Notification className="notification-bar" notification={notification} />
-      <div>
+      <div className="header-container">
         <h1>Phonebook</h1>
       </div>
       <div className="container">
         <Filter filterByName={filterByName} />
-        <h2>Add / update contacts</h2>
         <PersonForm
           handleNameChange={handleNameChange}
           handleNumberChange={handleNumberChange}
@@ -139,7 +138,6 @@ const App = () => {
           nameValue={newName}
           numberValue={newNumber}
         />
-        <h2>All contacts</h2>
         <PersonList
           filteredPersons={filteredPersons} 
           removePerson={removePerson}
