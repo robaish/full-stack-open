@@ -229,7 +229,6 @@ button:focus:not(:focus-visible) {
   }
 
   h2 {
-    font-size: 0.8rem;
-    text-transform: uppercase;
+    font-size: 1.25rem;
   }
 }
