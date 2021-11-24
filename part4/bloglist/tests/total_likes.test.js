@@ -5,13 +5,13 @@ describe('total likes', () => {
   test('of one value is the value itself', () => {
     const blogs = data.slice(0,1)
     const result = listHelper.totalLikes(blogs)
-    expect(result).toBe(10)
+    expect(result).toBe(12)
   })
 
   test('of many values are their sum', () => {
     const blogs = [...data]
     const result = listHelper.totalLikes(blogs)
-    expect(result).toBe(28)
+    expect(result).toBe(41)
   })
 
   test('of empty value is zero', () => {

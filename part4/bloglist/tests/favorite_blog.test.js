@@ -15,7 +15,7 @@ describe('the most liked blog', () => {
     expect(result).toEqual(blogs[0])
   })
 
-  test('of empty value is)', () => {
+  test('of empty value is zero', () => {
     const blogs = [{}]
     const result = listHelper.favoriteBlog(blogs)
     expect(result).toBe(0)
