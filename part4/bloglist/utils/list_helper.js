@@ -25,9 +25,23 @@ const mostBlogs = (blogs) => {
     : null
 }
 
+const mostLikes = (blogs) => {
+  const sumOfLikes = _(blogs)
+    .groupBy('author')
+    .map((author, name) => ({
+      author: name,
+      likes: _.sumBy(author, 'likes')
+    }))
+  
+  const cleanedSums = sumOfLikes.filter(obj => obj.author !== 'undefined' && obj.likes !== undefined)
+
+  return favoriteBlog(cleanedSums)
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
