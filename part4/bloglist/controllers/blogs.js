@@ -22,7 +22,7 @@ blogsRouter.get('/:id', (req, res, next) => {
 })
 
 // ADD BLOG
-blogsRouter.post('/', (req, res, next) => {
+blogsRouter.post('/', async (req, res, next) => {
   const body = req.body
   
   const blog = new Blog({
@@ -32,12 +32,8 @@ blogsRouter.post('/', (req, res, next) => {
     likes: body.likes
   })
   
-  blog
-    .save()
-    .then(savedBlog => {
-      res.json(savedBlog.toJSON())
-    })
-    .catch(error => next(error))
+  const savedBlog = await blog.save()
+  res.json(savedBlog)
 })
 
 // DELETE BLOG
