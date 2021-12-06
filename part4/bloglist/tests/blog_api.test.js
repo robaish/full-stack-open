@@ -13,7 +13,7 @@ beforeEach(async () => {
   await Promise.all(promiseArray)
 })
 
-// GET
+// GET ALL
 describe('When getting blogs from database:', () => {
   test('blogs are returned as json', async () => {
     await api
@@ -33,6 +33,41 @@ describe('When getting blogs from database:', () => {
   })
 })
 
+// SINGLE BLOG POST
+describe('A single blog post:', () => {
+  test('with a valid id can be viewed', async () => {
+    const blogsBefore = await helper.blogsInDb()
+    const chosenBlog = blogsBefore[0]
+
+    const resultBlog = await api
+      .get(`/api/blogs/${chosenBlog.id}`)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+    
+    expect(resultBlog.body).toEqual(chosenBlog)
+  })
+
+  test('with nonexisting id fails with status code 404', async () => {
+    const nonExistingId = await helper.nonExistingId()
+
+    await api
+      .get(`/api/blogs/${nonExistingId}`)
+      .expect(404)
+  })
+
+  test('can be deleted', async () => {
+    const blogsBefore = await helper.blogsInDb()
+    const chosenBlog = blogsBefore[0]
+
+    await api
+      .delete(`/api/blogs/${chosenBlog.id}`)
+      .expect(204)
+
+    const blogsAfter = await helper.blogsInDb()
+    expect(blogsAfter).toHaveLength(helper.initialBlogs.length - 1)
+  })
+})
+
 // POST
 describe('When posting blogs to database:', () => {
   test('a valid note is added', async () => {
@@ -49,10 +84,10 @@ describe('When posting blogs to database:', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
     
-    const blogsInTheEnd = await helper.blogsInDb()
-    expect(blogsInTheEnd).toHaveLength(helper.initialBlogs.length + 1)
+    const blogsAfter = await helper.blogsInDb()
+    expect(blogsAfter).toHaveLength(helper.initialBlogs.length + 1)
 
-    const blogTitles = blogsInTheEnd.map(blog => blog.title)
+    const blogTitles = blogsAfter.map(blog => blog.title)
     expect(blogTitles).toContain(newBlog.title)
   })
 
@@ -73,9 +108,9 @@ describe('When posting blogs to database:', () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-      const blogsInTheEnd = await helper.blogsInDb()
-      expect(blogsInTheEnd).toHaveLength(helper.initialBlogs.length + 1)
-      expect(blogsInTheEnd[blogsInTheEnd.length - 1]).toHaveProperty('likes', 0)
+      const blogsAfter = await helper.blogsInDb()
+      expect(blogsAfter).toHaveLength(helper.initialBlogs.length + 1)
+      expect(blogsAfter[blogsAfter.length - 1]).toHaveProperty('likes', 0)
   })
 
   test('missing title/url results in 400 bad request', async () => {
