@@ -7,7 +7,7 @@ const Blog = require('../models/blog')
 
 // INITIALIZE DB
 beforeEach(async () => {
-  await Blog.deleteMany({}) // clear
+  await Blog.deleteMany({}) // clear db
   const blogObjs = helper.initialBlogs.map(blog => new Blog(blog))
   const promiseArray = blogObjs.map(blog => blog.save())
   await Promise.all(promiseArray)
@@ -54,6 +54,28 @@ describe('When posting blogs to database:', () => {
 
     const blogTitles = blogsInTheEnd.map(blog => blog.title)
     expect(blogTitles).toContain(newBlog.title)
+  })
+
+  test('missing likes property defaults to 0', async () => {
+    const newBlog = {
+      "title": "Yet Another Blog",
+      "author": "Yet Another Author",
+      "url": "https://yetanother.blog/"
+    }
+
+    if (newBlog.likes === undefined) {
+      newBlog.likes = 0
+    }
+      
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+      const blogsInTheEnd = await helper.blogsInDb()
+      expect(blogsInTheEnd).toHaveLength(helper.initialBlogs.length + 1)
+      expect(blogsInTheEnd[blogsInTheEnd.length - 1]).toHaveProperty('likes', 0)
   })
 })
 
