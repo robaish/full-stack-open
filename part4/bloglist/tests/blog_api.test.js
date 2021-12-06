@@ -77,6 +77,18 @@ describe('When posting blogs to database:', () => {
       expect(blogsInTheEnd).toHaveLength(helper.initialBlogs.length + 1)
       expect(blogsInTheEnd[blogsInTheEnd.length - 1]).toHaveProperty('likes', 0)
   })
+
+  test('missing title/url results in 400 bad request', async () => {
+    const newBlog = {
+      "title": "Yet Another Blog",
+      "author": "Yet Another Author"
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
 })
 
 afterAll(() => {
