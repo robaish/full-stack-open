@@ -13,7 +13,7 @@ beforeEach(async () => {
   await Promise.all(promiseArray)
 })
 
-// GET ALL
+// GET ALL BLOG POSTS
 describe('When getting blogs from database:', () => {
   test('blogs are returned as json', async () => {
     await api
@@ -33,7 +33,7 @@ describe('When getting blogs from database:', () => {
   })
 })
 
-// SINGLE BLOG POST
+// A SINGLE BLOG POST
 describe('A single blog post:', () => {
   test('with a valid id can be viewed', async () => {
     const blogsBefore = await helper.blogsInDb()
@@ -66,11 +66,22 @@ describe('A single blog post:', () => {
     const blogsAfter = await helper.blogsInDb()
     expect(blogsAfter).toHaveLength(helper.initialBlogs.length - 1)
   })
+
+  test('can be updated', async () => {
+    const blogsBefore = await helper.blogsInDb()
+    const blogToUpdate = blogsBefore[0]
+    blogToUpdate.likes += 1000
+
+    const updatedBlog = await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+  })
 })
 
-// POST
+// POSTING NEW BLOG POSTS
 describe('When posting blogs to database:', () => {
-  test('a valid note is added', async () => {
+  test('a valid blog post is added', async () => {
     const newBlog = {
       "title": "Yet Another Blog",
       "author": "Yet Another Author",

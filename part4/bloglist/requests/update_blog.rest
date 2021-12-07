@@ -1,0 +1,10 @@
+PUT http://localhost:3003/api/blogs/619b6249eda91c1577943c4c HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Wait But Why",
+  "author": "Tim Urban",
+  "url": "https://waitbutwhy.com/",
+  "likes": 1000,
+  "id": "619b6249eda91c1577943c4c"
+}
