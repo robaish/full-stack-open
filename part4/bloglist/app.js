@@ -4,6 +4,7 @@ require('express-async-errors') // eliminates try-catch
 const app = express()
 const cors = require('cors')
 const blogsRouter = require('./controllers/blogs')
+const usersRouter = require('./controllers/users')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
@@ -29,8 +30,11 @@ app.get('/', (request, response) => {
 	response.send('<h1>Blog list</h1>');
 });
 
-// ROUTER USED IF URL IS /API/BLOGS/...
+// ROUTER USED IF URL IS /API/BLOGS/
 app.use('/api/blogs', blogsRouter)
+
+// ROUTER USED IF URL IS /API/USERS
+app.use('/api/users', usersRouter)
 
 app.use(middleware.unknownEndPoint)
 app.use(middleware.errorHandler)
