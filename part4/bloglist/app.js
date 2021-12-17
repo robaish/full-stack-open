@@ -32,13 +32,13 @@ app.get('/', (request, response) => {
 	response.send('<h1>Blog list</h1>');
 });
 
-// ROUTER USED IF URL IS /API/BLOGS/
+// ROUTER ONLY USED IN /API/BLOGS ROUTES
 app.use('/api/blogs', blogsRouter)
 
-// ROUTER USED IF URL IS /API/USERS
+// ROUTER ONLY USED IN /API/USERS ROUTES
 app.use('/api/users', usersRouter)
 
-// ROUTER USED IF URL IS /API/LOGIN
+// ROUTER ONLY USED IN /API/LOGIN ROUTES
 app.use('/api/login', loginRouter)
 
 app.use(middleware.unknownEndPoint)

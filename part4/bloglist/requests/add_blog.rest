@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs HTTP/1.1
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFyaXN0b3RsZSIsImlkIjoiNjFiMGQwMTc5YjA4MDg4NDU0ZjI5NGZhIiwiaWF0IjoxNjM5MTU0MDkyfQ.S8PEJbR9LsX1pdJgnk4_Dy_EZ3OpBRt4X9HVUPcE_kU
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYxYjBhMGYwMTAxZTRmYzM1ZjY0YzJlMyIsImlhdCI6MTYzOTczMzkzMX0.HNdn6kXakyfJ4tIlTS9C9g7TeXrstteAxpWEJlnwfZU
 
 {
-  "title": "Test Blog",
+  "title": "Another Test Blog",
   "author": "Test Author",
   "url": "https://test.blog/",
   "likes": 1
