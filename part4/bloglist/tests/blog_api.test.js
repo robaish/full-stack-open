@@ -5,8 +5,24 @@ const api = supertest(app)
 const helper = require('./test_helper')
 const Blog = require('../models/blog')
 
+// FOR TESTS REQUIRING LOGIN
+const user = {
+  "username": "root",
+  "password": "salainen",
+  "token": ""
+}
+
 // INITIALIZE DB
 beforeEach(async () => {
+  // log in user before tests
+  const loggedInUser = await api
+      .post('/api/login')
+      .send(user)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+  
+  user.token = loggedInUser.body.token
+
   await Blog.deleteMany({}) // clear db
   const blogObjs = helper.initialBlogs.map(blog => new Blog(blog))
   const promiseArray = blogObjs.map(blog => blog.save())
@@ -35,16 +51,17 @@ describe('When getting blogs from database:', () => {
 
 // A SINGLE BLOG POST
 describe('A single blog post:', () => {
+  // test getting
   test('with a valid id can be viewed', async () => {
     const blogsBefore = await helper.blogsInDb()
-    const chosenBlog = blogsBefore[0]
+    const blogToDelete = blogsBefore[0]
 
     const resultBlog = await api
-      .get(`/api/blogs/${chosenBlog.id}`)
+      .get(`/api/blogs/${blogToDelete.id}`)
       .expect(200)
       .expect('Content-Type', /application\/json/)
     
-    expect(resultBlog.body).toEqual(chosenBlog)
+    expect(resultBlog.body).toEqual(blogToDelete)
   })
 
   test('with nonexisting id fails with status code 404', async () => {
@@ -54,19 +71,35 @@ describe('A single blog post:', () => {
       .get(`/api/blogs/${nonExistingId}`)
       .expect(404)
   })
-
+  // test deletion
   test('can be deleted', async () => {
-    const blogsBefore = await helper.blogsInDb()
-    const chosenBlog = blogsBefore[0]
+    // add blog, then delete
+    const newBlog = {
+      "title": "Soon Deleted",
+      "author": "Yet Another Author",
+      "url": "https://yetanother.blog/",
+      "likes": 3
+    }
 
     await api
-      .delete(`/api/blogs/${chosenBlog.id}`)
+      .post('/api/blogs')
+      .send(newBlog)
+      .set('Authorization', 'bearer ' + user.token)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsBefore = await helper.blogsInDb()
+    const blogToDelete = blogsBefore[blogsBefore.length - 1]
+  
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', 'bearer ' + user.token)
       .expect(204)
 
     const blogsAfter = await helper.blogsInDb()
-    expect(blogsAfter).toHaveLength(helper.initialBlogs.length - 1)
+    expect(blogsAfter).toHaveLength(helper.initialBlogs.length)
   })
-
+  // test updating
   test('can be updated', async () => {
     const blogsBefore = await helper.blogsInDb()
     const blogToUpdate = blogsBefore[0]
@@ -82,6 +115,7 @@ describe('A single blog post:', () => {
 // POSTING NEW BLOG POSTS
 describe('When posting blogs to database:', () => {
   test('a valid blog post is added', async () => {
+    
     const newBlog = {
       "title": "Yet Another Blog",
       "author": "Yet Another Author",
@@ -92,6 +126,7 @@ describe('When posting blogs to database:', () => {
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set('Authorization', 'bearer ' + user.token)
       .expect(200)
       .expect('Content-Type', /application\/json/)
     
@@ -116,6 +151,7 @@ describe('When posting blogs to database:', () => {
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set('Authorization', 'bearer ' + user.token)
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -124,7 +160,7 @@ describe('When posting blogs to database:', () => {
       expect(blogsAfter[blogsAfter.length - 1]).toHaveProperty('likes', 0)
   })
 
-  test('missing title/url results in 400 bad request', async () => {
+  test('missing title/url results in 400 bad request', async () => {    
     const newBlog = {
       "title": "Yet Another Blog",
       "author": "Yet Another Author"
@@ -133,7 +169,22 @@ describe('When posting blogs to database:', () => {
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set('Authorization', 'bearer ' + user.token)
       .expect(400)
+  })
+
+  test('posting a blog without token results in 401', async () => {
+    const newBlog = {
+      "title": "Yet Another Blog",
+      "author": "Yet Another Author",
+      "url": "https://yetanother.blog/",
+      "likes": 3
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(401)
   })
 })
 
