@@ -12,8 +12,16 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs(blogs)
     )  
+  }, [])
+
+  useEffect(() => {
+    const loggedInUserJSON = window.localStorage.getItem('loggedInBloglistUser')
+    if (loggedInUserJSON) {
+      const user = JSON.parse(loggedInUserJSON)
+      setUser(user)
+    }
   }, [])
 
   const handleLogin = async event => {
@@ -21,6 +29,7 @@ const App = () => {
     console.log('%c logging in with:', 'color: orange;', username, password);
     try {
       const userData = await loginService.login({ username, password })
+      window.localStorage.setItem('loggedInBloglistUser', JSON.stringify(userData))
       setUser(userData)
       setUsername('')
       setPassword('')      
@@ -42,6 +51,7 @@ const App = () => {
       : <Bloglist 
           blogs={blogs} 
           user={user}
+          setUser={setUser}
         />
       }
     </div>
