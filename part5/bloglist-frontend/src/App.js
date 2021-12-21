@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
 import Bloglist from './components/Bloglist'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -10,6 +11,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [notification, setNotification] = useState({ state: null, message: '' })
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -37,6 +39,8 @@ const App = () => {
       setPassword('')
     } catch (e) {
       console.log(e)
+      setNotification({ state: 'danger', message: `${e.response.data.error}` })
+      setTimeout(() => setNotification({ state: null }), 5000)
     }
   }
 
@@ -46,7 +50,8 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className="app-wrapper">
+      <Notification className="notification-bar" notification={notification} />
       {user === null
       ? <LoginForm
           handleLogin={handleLogin}
@@ -71,6 +76,7 @@ const App = () => {
           <NewBlogForm
             blogs={blogs}
             setBlogs={setBlogs}
+            setNotification={setNotification}
           />
 
         </div>

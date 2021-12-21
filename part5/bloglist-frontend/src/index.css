@@ -1,7 +1,50 @@
+:root {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+.app-wrapper {
+  margin-top: 10vh;
+}
+
 .bloglist-container {
   margin-top: 2.5em;
 }
 
 .new-blog-form-container {
   margin-top: 2.5em;
+}
+
+/* Notifications */
+
+.notification {
+  position: absolute;
+  top: 20px;
+  width: 90vw;
+  max-width: 1140px;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  font-size: 1rem;
+}
+
+.success {
+  background: #E0F3EF;
+  color: #005538;
+}
+
+.warning {
+  background: #FDF7DE;
+  color: #EDB600;
+}
+
+.danger {
+  background: #FBE9E7;
+  color: #F24E1E;
 }
