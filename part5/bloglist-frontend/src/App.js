@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
 import Bloglist from './components/Bloglist'
+import Toggleable from './components/Toggleable'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -49,6 +50,22 @@ const App = () => {
     setUser(null)
   }
 
+  const newBlogFormRef = useRef()
+
+  const addBlog = async (newBlog) => {
+    try {
+      newBlogFormRef.current.toggleVisibility()
+      await blogService.create(newBlog)
+      setBlogs(blogs.concat(newBlog))
+      setNotification({ state: 'success', message: `Blog post added: ${newBlog.title} by ${newBlog.author}` })
+      setTimeout(() => setNotification({ state: null }), 5000)
+    } catch(e) {
+      console.log(e)
+      setNotification({ state: 'danger', message: `${e.response.data.error}` })
+      setTimeout(() => setNotification({ state: null }), 5000)
+    }
+  }
+
   return (
     <div className="app-wrapper">
       <Notification className="notification-bar" notification={notification} />
@@ -70,15 +87,12 @@ const App = () => {
               Log out
             </button>
           </div>
+          <Toggleable buttonLabel="Add new blog post" ref={newBlogFormRef}>
+            <NewBlogForm addBlog={addBlog} />
+          </Toggleable>
           <Bloglist
             blogs={blogs}
           />
-          <NewBlogForm
-            blogs={blogs}
-            setBlogs={setBlogs}
-            setNotification={setNotification}
-          />
-
         </div>
       }
     </div>

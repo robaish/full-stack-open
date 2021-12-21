@@ -35,6 +35,7 @@ module.exports = {
       'arrow-spacing': [
           'error', { 'before': true, 'after': true }
       ],
-      'react/prop-types': 0
+      'react/prop-types': 0,
+      'react/display-name': 0
   }
 }

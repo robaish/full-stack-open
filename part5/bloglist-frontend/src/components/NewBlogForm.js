@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
 
-const NewBlogForm = ({ blogs, setBlogs, setNotification }) => {
+const NewBlogForm = ({ addBlog }) => {
   const [newBlog, setNewBlog] = useState({
     title: '',
     author: '',
@@ -15,25 +14,18 @@ const NewBlogForm = ({ blogs, setBlogs, setNotification }) => {
     })
   }
 
-  const addBlog = async event => {
+  const createBlog = event => {
     event.preventDefault()
-    try {
-      await blogService.create(newBlog)
-      setBlogs(blogs.concat(newBlog))
-      setNotification({ state: 'success', message: `Blog post added: ${newBlog.title} by ${newBlog.author}` })
-      setTimeout(() => setNotification({ state: null }), 5000)
-      setNewBlog({
-        title: '',
-        author: '',
-        url: ''
-      })
-    } catch(e) {
-      console.log(e)
-    }
+    addBlog(newBlog)
+    setNewBlog({
+      title: '',
+      author: '',
+      url: ''
+    })
   }
 
   return (
-    <form className="new-blog-form-container" onSubmit={addBlog}>
+    <form className="new-blog-form-container" onSubmit={createBlog}>
       <h3>Add a new blog post</h3>
       <div>
         title:
