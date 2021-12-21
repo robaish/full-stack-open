@@ -1,24 +1,24 @@
-import React from 'react';
+import React from 'react'
 
 const LoginForm = (props) => (
   <form onSubmit={props.handleLogin}>
     <h2>Log in to Bloglist</h2>
-    <div> 
-      username: 
-      <input 
+    <div>
+      username:
+      <input
         type="text"
         value={props.username}
-        name="Username"
-        onChange={({ target }) => props.setUsername(target.value)} 
+        name="username"
+        onChange={({ target }) => props.setUsername(target.value)}
       />
     </div>
     <div>
       password:
-      <input 
+      <input
           type="password"
           value={props.password}
-          name="Password"
-          onChange={({ target }) => props.setPassword(target.value)} 
+          name="password"
+          onChange={({ target }) => props.setPassword(target.value)}
         />
     </div>
     <button type="submit">Log in</button>
