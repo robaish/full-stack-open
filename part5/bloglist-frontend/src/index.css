@@ -10,6 +10,7 @@
   box-sizing: inherit;
 }
 
+/* Wrappers/containers */
 .app-wrapper {
   margin-top: 10vh;
 }
@@ -20,6 +21,28 @@
 
 .new-blog-form-container {
   margin-top: 2.5em;
+}
+
+.blog-container {
+  width: 90vw;
+  max-width: 480px;
+  margin: 0.5em 0;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  background-color: #f1f1f18f; 
+}
+
+/* Flexbox */
+.flex {
+  display: flex;
+}
+
+.flex-vertical {
+  flex-direction: column;
+}
+
+.flex-jc-sb {
+  justify-content: space-between;
 }
 
 /* Notifications */
