@@ -66,6 +66,17 @@ const App = () => {
     }
   }
 
+  const updateBlog = async (id, updatedBlog) => {
+    try {
+      await blogService.update(id, updatedBlog)
+      setNotification({ state: 'success', message: `Like added: ${updatedBlog.title} by ${updatedBlog.author}` })
+      setTimeout(() => setNotification({ state: null }), 5000)
+    } catch(e) {
+      setNotification({ state: 'danger', message: `${e.response.data.error}` })
+      setTimeout(() => setNotification({ state: null }), 5000)
+    }
+  }
+
   return (
     <div className="app-wrapper">
       <Notification className="notification-bar" notification={notification} />
@@ -92,6 +103,7 @@ const App = () => {
           </Toggleable>
           <Bloglist
             blogs={blogs}
+            updateBlog={updateBlog}
           />
         </div>
       }

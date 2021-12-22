@@ -1,12 +1,24 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlog }) => {
   const [showDetails, setShowDetails] = useState(false)
 
   const buttonLabel = showDetails ? 'Hide' : 'View'
 
   const toggleDetails = () => {
     setShowDetails(!showDetails)
+  }
+
+  const like = (event) => {
+    event.preventDefault()
+    const addedLike = {
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      likes: blog.likes + 1,
+      user: blog.user.id
+    }
+    updateBlog(blog.id, addedLike)
   }
 
   return (
@@ -18,7 +30,7 @@ const Blog = ({ blog }) => {
       {showDetails &&
         <div className='flex flex-vertical'>
           <span>{blog.url}</span>
-          <span>Likes: {blog.likes} <button>Like</button></span>
+          <span>Likes: {blog.likes} <button onClick={like}>Like</button></span>
           <span>Added by {blog.user.name}</span>
         </div>
       }
