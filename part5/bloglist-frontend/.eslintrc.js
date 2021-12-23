@@ -1,22 +1,23 @@
+// eslint-disable-next-line no-undef
 module.exports = {
+    'env': {
+        'es6': true,
+        'browser': true,
+        'jest/globals': true
+    },
     'extends': [
         'eslint:recommended',
         'plugin:import/errors',
         'plugin:react/recommended',
         'plugin:jsx-a11y/recommended'
     ],
-    'plugins': ['react', 'import', 'jsx-a11y'],
+    'plugins': ['react', 'jest', 'import', 'jsx-a11y'],
     'parserOptions': {
         'ecmaVersion': 2021,
         'sourceType': 'module',
         'ecmaFeatures': {
           'jsx': true
         }
-    },
-    'env': {
-        'es6': true,
-        'browser': true,
-        'node': true
     },
     'rules': {
       'quotes': [
@@ -35,7 +36,13 @@ module.exports = {
       'arrow-spacing': [
           'error', { 'before': true, 'after': true }
       ],
+      'no-console': 0,
       'react/prop-types': 0,
       'react/display-name': 0
+  },
+  'settings': {
+    'react': {
+      'version': 'detect'
+    }
   }
 }
