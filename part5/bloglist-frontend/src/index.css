@@ -10,6 +10,26 @@
   box-sizing: inherit;
 }
 
+/* Flexbox */
+.flex {
+  display: flex;
+}
+
+.flex-vertical {
+  flex-direction: column;
+}
+
+.flex-jc-sb {
+  justify-content: space-between;
+}
+
+/* Buttons */
+button {
+  display: inline-block;
+  text-align: center;
+  width: fit-content;
+}
+
 /* Wrappers/containers */
 .app-wrapper {
   margin-top: 10vh;
@@ -30,19 +50,6 @@
   padding: 0.5em;
   border-radius: 0.5em;
   background-color: #f1f1f18f; 
-}
-
-/* Flexbox */
-.flex {
-  display: flex;
-}
-
-.flex-vertical {
-  flex-direction: column;
-}
-
-.flex-jc-sb {
-  justify-content: space-between;
 }
 
 /* Notifications */

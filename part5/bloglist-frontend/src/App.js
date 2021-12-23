@@ -77,6 +77,17 @@ const App = () => {
     }
   }
 
+  const removeBlog = async id => {
+    try {
+      await blogService.remove(id)
+      setNotification({ state: 'success', message: 'Blog post deleted' })
+      setTimeout(() => setNotification({ state: null }), 5000)
+    } catch(e) {
+      setNotification({ state: 'danger', message: `${e.response.data.error}` })
+      setTimeout(() => setNotification({ state: null }), 5000)
+    }
+  }
+
   return (
     <div className="app-wrapper">
       <Notification className="notification-bar" notification={notification} />
@@ -104,6 +115,8 @@ const App = () => {
           <Bloglist
             blogs={blogs}
             updateBlog={updateBlog}
+            removeBlog={removeBlog}
+            user={user}
           />
         </div>
       }

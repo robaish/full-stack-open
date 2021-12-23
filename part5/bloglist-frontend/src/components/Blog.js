@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog, updateBlog }) => {
+const Blog = ({ blog, updateBlog, removeBlog, user }) => {
   const [showDetails, setShowDetails] = useState(false)
 
   const buttonLabel = showDetails ? 'Hide' : 'View'
@@ -21,6 +21,12 @@ const Blog = ({ blog, updateBlog }) => {
     updateBlog(blog.id, addedLike)
   }
 
+  const remove = event => {
+    event.preventDefault()
+    window.confirm(`Sure you want to delete ${blog.title}?`)
+    removeBlog(blog.id)
+  }
+
   return (
     <div className='blog-container'>
       <div className='flex flex-jc-sb'>
@@ -32,6 +38,9 @@ const Blog = ({ blog, updateBlog }) => {
           <span>{blog.url}</span>
           <span>Likes: {blog.likes} <button onClick={like}>Like</button></span>
           <span>Added by {blog.user.name}</span>
+          {blog.user.username === user.username &&
+          <button onClick={remove}>Remove</button>
+          }
         </div>
       }
     </div>
