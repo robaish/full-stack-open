@@ -9,8 +9,6 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState({ state: null, message: '' })
 
@@ -28,16 +26,13 @@ const App = () => {
     }
   }, [])
 
-  const handleLogin = async event => {
-    event.preventDefault()
+  const handleLogin = async (username, password) => {
     console.log('%c logging in with:', 'color: orange;', username, password)
     try {
       const userData = await loginService.login({ username, password })
       window.localStorage.setItem('loggedInBloglistUser', JSON.stringify(userData))
       blogService.setToken(userData.token)
       setUser(userData)
-      setUsername('')
-      setPassword('')
     } catch (e) {
       console.log(e)
       setNotification({ state: 'danger', message: `${e.response.data.error}` })
@@ -92,13 +87,7 @@ const App = () => {
     <div className="app-wrapper">
       <Notification className="notification-bar" notification={notification} />
       {user === null
-      ? <LoginForm
-          handleLogin={handleLogin}
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword}
-        />
+      ? <LoginForm handleLogin={handleLogin} />
       : <div>
           <h2>Bloglist</h2>
           <div>
