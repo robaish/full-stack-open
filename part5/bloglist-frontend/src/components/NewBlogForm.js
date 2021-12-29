@@ -32,6 +32,7 @@ const NewBlogForm = ({ addBlog }) => {
         title:
         <input
           type="text"
+          id="title"
           value={newBlog.title}
           name="title"
           onChange={updateField}
@@ -41,6 +42,7 @@ const NewBlogForm = ({ addBlog }) => {
         author:
         <input
           type="text"
+          id="author"
           value={newBlog.author}
           name="author"
           onChange={updateField}
@@ -50,6 +52,7 @@ const NewBlogForm = ({ addBlog }) => {
         url:
         <input
           type="text"
+          id="url"
           value={newBlog.url}
           name="url"
           onChange={updateField}
