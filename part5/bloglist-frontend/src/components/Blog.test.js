@@ -5,6 +5,7 @@ import Blog from './Blog'
 
 describe('<Blog />', () => {
   let component
+  const likeBlog = jest.fn()
 
   beforeEach(() => {
     const user = {
@@ -22,7 +23,11 @@ describe('<Blog />', () => {
     }
 
     component = render(
-      <Blog blog={blog} user={user} />
+      <Blog
+        blog={blog}
+        user={user}
+        updateBlog={likeBlog}
+      />
     )
   })
 
@@ -40,6 +45,17 @@ describe('<Blog />', () => {
 
     const details = component.container.querySelector('.testing-blog-details')
     expect(details).not.toHaveStyle('display: none')
+  })
+
+  test('clicking like button twice calls event handler twice', () => {
+    const viewButton = component.getByText('View')
+    fireEvent.click(viewButton)
+
+    const likeButton = component.getByText('Like')
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+
+    expect(likeBlog.mock.calls).toHaveLength(2)
   })
 
 })
