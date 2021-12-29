@@ -9,7 +9,7 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
     setShowDetails(!showDetails)
   }
 
-  const like = (event) => {
+  const like = event => {
     event.preventDefault()
     const addedLike = {
       title: blog.title,
@@ -29,12 +29,12 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
 
   return (
     <div className='blog-container'>
-      <div className='flex flex-jc-sb'>
+      <div className='flex flex-jc-sb testing-blog-defaults'>
         {`${blog.title} – ${blog.author}`}
         <button onClick={toggleDetails}>{buttonLabel}</button>
       </div>
       {showDetails &&
-        <div className='flex flex-vertical'>
+        <div className='flex flex-vertical testing-blog-details'>
           <span>{blog.url}</span>
           <span>Likes: {blog.likes} <button onClick={like}>Like</button></span>
           <span>Added by {blog.user.name}</span>
