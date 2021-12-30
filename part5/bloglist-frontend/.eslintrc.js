@@ -3,7 +3,8 @@ module.exports = {
     'env': {
         'es6': true,
         'browser': true,
-        'jest/globals': true
+        'jest/globals': true,
+        'cypress/globals': true
     },
     'extends': [
         'eslint:recommended',
@@ -11,7 +12,7 @@ module.exports = {
         'plugin:react/recommended',
         'plugin:jsx-a11y/recommended'
     ],
-    'plugins': ['react', 'jest', 'import', 'jsx-a11y'],
+    'plugins': ['react', 'jest', 'cypress', 'import', 'jsx-a11y'],
     'parserOptions': {
         'ecmaVersion': 2021,
         'sourceType': 'module',

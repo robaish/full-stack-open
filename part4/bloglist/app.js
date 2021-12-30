@@ -41,6 +41,12 @@ app.use('/api/users', usersRouter)
 // ROUTER ONLY USED IN /API/LOGIN ROUTES
 app.use('/api/login', loginRouter)
 
+// ROUTER FOR TESTING
+if (process.env.NODE_ENV === 'test') {
+  const testingRouter = require('./controllers/testing')
+  app.use('/api/testing', testingRouter)
+}
+
 app.use(middleware.unknownEndPoint)
 app.use(middleware.errorHandler)
 
