@@ -33,4 +33,22 @@ describe('Bloglist app', function() {
       cy.get('.danger').contains('invalid username or password')
     })
   })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.get('#username-input').type('miyazaki')
+      cy.get('#password-input').type('salainen')
+      cy.get('#login-button').click()
+    })
+
+    it('A blog post can be created', function() {
+      cy.get('#toggleable-button-show').click()
+      cy.get('#title').type('Be here now')
+      cy.get('#author').type('Ram Dass')
+      cy.get('#url').type('ramdass.org/bhn')
+      cy.get('#add-blog-button').click()
+
+      cy.get('.bloglist-container').contains('Be here now')
+    })
+  })
 })
