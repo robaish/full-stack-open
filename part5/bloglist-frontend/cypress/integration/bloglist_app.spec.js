@@ -61,12 +61,19 @@ describe('Bloglist app', function() {
       cy.get('.bloglist-container').contains('Be here now')
     })
 
-    it.only('Users can like a blog', function() {
+    it('Users can like a blog', function() {
       cy.wait(2000)
       cy.get('#blog-details-button').click()
       cy.get('#likes').contains(0)
       cy.get('#like-button').click()
       cy.get('#likes').contains(1)
+    })
+
+    it('The user who created a blog post can delete it', function() {
+      cy.wait(2000)
+      cy.get('#blog-details-button').click()
+      cy.get('#remove-button').click()
+      cy.get('.blog-container').should('not.exist')
     })
   })
 })
