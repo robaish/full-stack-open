@@ -36,9 +36,19 @@ describe('Bloglist app', function() {
 
   describe('When logged in', function() {
     beforeEach(function() {
+      // FOR SOME REASON, THE CUSTOM COMMANDS WORK BUT WILL RESULT IN 401 WHEN ADDING BLOG POST (TOKEN NULL)
+      // BUT LOGGING IN WITH UI WORKS, SO DOING THAT INSTEAD
+      // cy.login({ username: 'miyazaki', password: 'salainen' })
+      // cy.addBlog({ title: 'The making of Totoro', author: 'Ghibli', url: 'totoro.cool' })
       cy.get('#username-input').type('miyazaki')
       cy.get('#password-input').type('salainen')
       cy.get('#login-button').click()
+
+      cy.get('#toggleable-button-show').click()
+      cy.get('#title').type('The making of Totoro')
+      cy.get('#author').type('Ghibli')
+      cy.get('#url').type('totoro.cool')
+      cy.get('#add-blog-button').click()
     })
 
     it('A blog post can be created', function() {
@@ -49,6 +59,14 @@ describe('Bloglist app', function() {
       cy.get('#add-blog-button').click()
 
       cy.get('.bloglist-container').contains('Be here now')
+    })
+
+    it.only('Users can like a blog', function() {
+      cy.wait(2000)
+      cy.get('#blog-details-button').click()
+      cy.get('#likes').contains(0)
+      cy.get('#like-button').click()
+      cy.get('#likes').contains(1)
     })
   })
 })

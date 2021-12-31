@@ -31,15 +31,15 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
     <div className='blog-container'>
       <div className='flex flex-jc-sb testing-blog-defaults'>
         {`${blog.title} – ${blog.author}`}
-        <button onClick={toggleDetails}>{buttonLabel}</button>
+        <button id="blog-details-button" onClick={toggleDetails}>{buttonLabel}</button>
       </div>
       {showDetails &&
         <div className='flex flex-vertical testing-blog-details'>
           <span>{blog.url}</span>
-          <span>Likes: {blog.likes} <button onClick={like}>Like</button></span>
+          <span id="likes">Likes: {blog.likes} <button id="like-button" onClick={like}>Like</button></span>
           <span>Added by {blog.user.name}</span>
           {blog.user.username === user.username &&
-          <button onClick={remove}>Remove</button>
+          <button id="remove-button" onClick={remove}>Remove</button>
           }
         </div>
       }
