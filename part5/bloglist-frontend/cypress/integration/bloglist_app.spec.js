@@ -76,4 +76,23 @@ describe('Bloglist app', function() {
       cy.get('.blog-container').should('not.exist')
     })
   })
+
+  describe('Multiple blog posts', function() {
+    it('Blog posts are ordered correctly', function() {
+      cy.login({ username:'miyazaki', password: 'salainen' })
+			cy.addBlog({ title:'Least Popular', author:'Some Author', url:'some.blog', likes: 1 })
+			cy.addBlog({ title:'Middle One', author:'Some Author', url:'some.blog', likes: 10 })
+			cy.addBlog({ title:'Most Popular', author:'Some Author', url:'some.blog', likes: 20 })
+
+      cy
+      .get('.blog-container')
+      .find('#blog-details-button')
+      .then(btn => btn.click())
+
+      cy.get('.blog-container').eq(0).contains('Most Popular')
+      cy.get('.blog-container').eq(1).contains('Middle One')
+      cy.get('.blog-container').eq(2).contains('Least Popular')
+    })
+  })
+
 })
