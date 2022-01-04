@@ -1,4 +1,5 @@
 import React from 'react'
+import { createAnecdote, voteAnecdote } from './reducers/anecdoteReducer'
 import { useSelector, useDispatch } from 'react-redux'
 
 const App = () => {
@@ -7,22 +8,13 @@ const App = () => {
 
   const addNew = event => {
     event.preventDefault()
-    const anecdote = event.target.anecdote.value
+    const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    dispatch({
-      type: 'ADD_NEW',
-      data: {
-        content: anecdote
-      }
-      
-    })
+    dispatch(createAnecdote(content))
   }
 
   const vote = id => {
-    dispatch({
-      type: 'VOTE',
-      data: { id }
-    })
+    dispatch(voteAnecdote(id))
   }
 
   return (
