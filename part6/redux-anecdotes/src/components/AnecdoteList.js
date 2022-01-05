@@ -17,9 +17,12 @@ const AnecdoteList = () => {
     }, 5000)
   }
 
+  const searchString = useSelector(state => state.filter)
+  const matchingAnecdotes = anecdotes.filter(a => a.content.includes(searchString))
+
   return(
     <div>
-      {[...anecdotes]
+      {[...matchingAnecdotes]
         .sort((a, b) => b.votes - a.votes)
         .map(anecdote =>
           <div key={anecdote.id}>
