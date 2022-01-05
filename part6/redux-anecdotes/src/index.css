@@ -1,0 +1,17 @@
+:root {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+.notification-wrapper {
+  top: 10px;
+  margin-bottom: 40px;
+  height: 40px;
+}
