@@ -1,7 +1,5 @@
 import anecdoteService from '../services/anecdotes'
 
-const getId = () => (100000 * Math.random()).toFixed(0)
-
 const anecdoteReducer = (state = [], action) => {
   switch(action.type) {
     case 'INIT_ANECDOTES': {
@@ -35,10 +33,13 @@ export const initializeAnecdotes = () => {
   }
 }
 
-export const createAnecdote = data => {
-  return {
-    type: 'ADD_NEW',
-    data
+export const createAnecdote = content => {
+  return async dispatch => {
+    const newAnecdote = await anecdoteService.createNew(content)
+    dispatch({
+      type: 'ADD_NEW',
+      data: newAnecdote
+    })
   }
 }
 
