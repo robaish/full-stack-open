@@ -42,7 +42,6 @@ export const voteAnecdote = anecdote => {
   return async dispatch => {
     const votedAnecdote = {...anecdote, votes: anecdote.votes + 1}
     const updatedAnecdote = await anecdoteService.update(votedAnecdote)
-    console.log(updatedAnecdote)
     dispatch({
       type: 'VOTE',
       data: updatedAnecdote
