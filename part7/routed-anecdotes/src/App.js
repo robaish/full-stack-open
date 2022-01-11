@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Switch, Route, Link } from 'react-router-dom'
+import { Switch, Route, Link, useRouteMatch } from 'react-router-dom'
 
 const Menu = () => {
   const padding = {
@@ -18,10 +18,26 @@ const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote => <li key={anecdote.id}>
+        <Link to={`/anecdotes/${anecdote.id}`}>
+          {anecdote.content}
+        </Link>
+      </li>
+      )}
     </ul>
   </div>
 )
+
+const Anecdote = ({ anecdote }) => {
+  console.log(anecdote)
+  return (
+    <div>
+      <h2>{anecdote.content} by {anecdote.author}</h2>
+      <p>Has {anecdote.votes} votes</p>
+      <p><a href={anecdote.info}>More info</a></p>
+    </div>
+  )
+}
 
 const About = () => (
   <div>
@@ -49,7 +65,6 @@ const CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
-
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -81,7 +96,6 @@ const CreateNew = (props) => {
       </form>
     </div>
   )
-
 }
 
 const App = () => {
@@ -109,8 +123,7 @@ const App = () => {
     setAnecdotes(anecdotes.concat(anecdote))
   }
 
-  const anecdoteById = (id) =>
-    anecdotes.find(a => a.id === id)
+  const anecdoteById = (id) => anecdotes.find(a => a.id === id)
 
   const vote = (id) => {
     const anecdote = anecdoteById(id)
@@ -123,18 +136,27 @@ const App = () => {
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
 
+  const match = useRouteMatch('/anecdotes/:id')
+
+  const anecdoteMatch = match
+    ? anecdotes.find(a => a.id === match.params.id)
+    : null
+  
   return (
     <div>
       <Menu />
       <h1>Software anecdotes</h1>
       <Switch>
+        <Route path="/anecdotes/:id">
+          <Anecdote anecdote={anecdoteMatch} />
+        </Route>
         <Route path="/create">
           <CreateNew addNew={addNew} />
         </Route>
         <Route path="/about">
           <About />
         </Route>
-        <Route>
+        <Route path="/">
           <AnecdoteList anecdotes={anecdotes} />
         </Route>
       </Switch>
