@@ -92,15 +92,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input {...content} />
+          <input {...content} reset="true" />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...author} reset="true" />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...info} reset="true" />
         </div>
         <button>create</button>
         <button onClick={handleReset}>reset</button>
