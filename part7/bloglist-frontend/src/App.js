@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { initBlogs } from './reducers/blogReducer'
+import { initBlogs, createBlog } from './reducers/blogReducer'
 import { notifySuccess, notifyError } from './reducers/notificationReducer'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
@@ -51,8 +51,7 @@ const App = () => {
   const addBlog = async (newBlog) => {
     try {
       newBlogFormRef.current.toggleVisibility()
-      await blogService.create(newBlog)
-      // setBlogs(blogs.concat(newBlog))
+      dispatch(createBlog(newBlog))
       dispatch(notifySuccess(`Blog post added: ${newBlog.title} by ${newBlog.author}`))
     } catch(e) {
       console.log(e)
