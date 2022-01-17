@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { initBlogs } from './reducers/blogReducer'
+import { notifySuccess, notifyError } from './reducers/notificationReducer'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
 import Bloglist from './components/Bloglist'
@@ -8,15 +11,13 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  const blogs = useSelector(state => state.blogs)
+  const dispatch = useDispatch()
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState({ state: null, message: '' })
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
-  }, [blogs])
+    dispatch(initBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedInUserJSON = window.localStorage.getItem('loggedInBloglistUser')
@@ -33,10 +34,10 @@ const App = () => {
       window.localStorage.setItem('loggedInBloglistUser', JSON.stringify(userData))
       blogService.setToken(userData.token)
       setUser(userData)
+      dispatch(notifySuccess('Welcome back.'))
     } catch (e) {
       console.log(e)
-      setNotification({ state: 'danger', message: `${e.response.data.error}` })
-      setTimeout(() => setNotification({ state: null }), 5000)
+      dispatch(notifyError(`${e.response.data.error}`))
     }
   }
 
@@ -51,41 +52,35 @@ const App = () => {
     try {
       newBlogFormRef.current.toggleVisibility()
       await blogService.create(newBlog)
-      setBlogs(blogs.concat(newBlog))
-      setNotification({ state: 'success', message: `Blog post added: ${newBlog.title} by ${newBlog.author}` })
-      setTimeout(() => setNotification({ state: null }), 5000)
+      // setBlogs(blogs.concat(newBlog))
+      dispatch(notifySuccess(`Blog post added: ${newBlog.title} by ${newBlog.author}`))
     } catch(e) {
       console.log(e)
-      setNotification({ state: 'danger', message: `${e.response.data.error}` })
-      setTimeout(() => setNotification({ state: null }), 5000)
+      dispatch(notifyError(`${e.response.data.error}`))
     }
   }
 
   const updateBlog = async (id, updatedBlog) => {
     try {
       await blogService.update(id, updatedBlog)
-      setNotification({ state: 'success', message: `Like added: ${updatedBlog.title} by ${updatedBlog.author}` })
-      setTimeout(() => setNotification({ state: null }), 5000)
+      dispatch(notifySuccess(`Like added: ${updatedBlog.title} by ${updatedBlog.author}`))
     } catch(e) {
-      setNotification({ state: 'danger', message: `${e.response.data.error}` })
-      setTimeout(() => setNotification({ state: null }), 5000)
+      dispatch(notifyError(`${e.response.data.error}`))
     }
   }
 
   const removeBlog = async id => {
     try {
       await blogService.remove(id)
-      setNotification({ state: 'success', message: 'Blog post deleted' })
-      setTimeout(() => setNotification({ state: null }), 5000)
+      dispatch(notifySuccess('Blog post deleted'))
     } catch(e) {
-      setNotification({ state: 'danger', message: `${e.response.data.error}` })
-      setTimeout(() => setNotification({ state: null }), 5000)
+      dispatch(notifyError(`${e.response.data.error}`))
     }
   }
 
   return (
     <div className="app-wrapper">
-      <Notification className="notification-bar" notification={notification} />
+      <Notification className="notification-bar" />
       {user === null
       ? <LoginForm handleLogin={handleLogin} />
       : <div>
