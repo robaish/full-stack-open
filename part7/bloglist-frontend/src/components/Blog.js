@@ -1,30 +1,24 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog, updateBlog, removeBlog, user }) => {
+const Blog = ({ blog, like, remove, user }) => {
   const [showDetails, setShowDetails] = useState(false)
-
   const buttonLabel = showDetails ? 'Hide' : 'View'
 
   const toggleDetails = () => {
     setShowDetails(!showDetails)
   }
 
-  const like = event => {
+  const likeBlog = event => {
     event.preventDefault()
-    const addedLike = {
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
-      likes: blog.likes + 1,
-      user: blog.user.id
-    }
-    updateBlog(blog.id, addedLike)
+    const likedBlog = { ...blog, likes: blog.likes + 1 }
+    like(likedBlog)
   }
 
-  const remove = event => {
+  const removeBlog = event => {
     event.preventDefault()
-    window.confirm(`Sure you want to delete ${blog.title}?`)
-    removeBlog(blog.id)
+    if (window.confirm(`Sure you want to delete ${blog.title}?`)) {
+      remove(blog)
+    }
   }
 
   return (
@@ -36,10 +30,10 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
       {showDetails &&
         <div className='flex flex-vertical testing-blog-details'>
           <span>{blog.url}</span>
-          <span id="likes">Likes: {blog.likes} <button id="like-button" onClick={like}>Like</button></span>
-          <span>Added by {blog.user.name}</span>
+          <span id="likes">Likes: {blog.likes} <button id="like-button" onClick={likeBlog}>Like</button></span>
+          <span>Added by {user.name}</span>
           {blog.user.username === user.username &&
-          <button id="remove-button" onClick={remove}>Remove</button>
+          <button id="remove-button" onClick={removeBlog}>Remove</button>
           }
         </div>
       }

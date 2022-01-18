@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { initBlogs, createBlog } from './reducers/blogReducer'
 import { notifySuccess, notifyError } from './reducers/notificationReducer'
 import LoginForm from './components/LoginForm'
@@ -11,7 +11,6 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
-  const blogs = useSelector(state => state.blogs)
   const dispatch = useDispatch()
   const [user, setUser] = useState(null)
 
@@ -48,31 +47,13 @@ const App = () => {
 
   const newBlogFormRef = useRef()
 
-  const addBlog = async (newBlog) => {
+  const addBlog = newBlog => {
     try {
       newBlogFormRef.current.toggleVisibility()
       dispatch(createBlog(newBlog))
       dispatch(notifySuccess(`Blog post added: ${newBlog.title} by ${newBlog.author}`))
     } catch(e) {
       console.log(e)
-      dispatch(notifyError(`${e.response.data.error}`))
-    }
-  }
-
-  const updateBlog = async (id, updatedBlog) => {
-    try {
-      await blogService.update(id, updatedBlog)
-      dispatch(notifySuccess(`Like added: ${updatedBlog.title} by ${updatedBlog.author}`))
-    } catch(e) {
-      dispatch(notifyError(`${e.response.data.error}`))
-    }
-  }
-
-  const removeBlog = async id => {
-    try {
-      await blogService.remove(id)
-      dispatch(notifySuccess('Blog post deleted'))
-    } catch(e) {
       dispatch(notifyError(`${e.response.data.error}`))
     }
   }
@@ -95,12 +76,7 @@ const App = () => {
           <Toggleable buttonLabel="Add new blog post" ref={newBlogFormRef}>
             <NewBlogForm addBlog={addBlog} />
           </Toggleable>
-          <Bloglist
-            blogs={blogs}
-            updateBlog={updateBlog}
-            removeBlog={removeBlog}
-            user={user}
-          />
+          <Bloglist user={user} />
         </div>
       }
     </div>
