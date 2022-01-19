@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { likeBlog, removeBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, like, remove, user }) => {
+const Blog = ({ blog, user }) => {
+  const dispatch = useDispatch()
   const [showDetails, setShowDetails] = useState(false)
   const buttonLabel = showDetails ? 'Hide' : 'View'
 
@@ -8,16 +11,16 @@ const Blog = ({ blog, like, remove, user }) => {
     setShowDetails(!showDetails)
   }
 
-  const likeBlog = event => {
+  const like = event => {
     event.preventDefault()
     const likedBlog = { ...blog, likes: blog.likes + 1 }
-    like(likedBlog)
+    dispatch(likeBlog(likedBlog))
   }
 
-  const removeBlog = event => {
+  const remove = event => {
     event.preventDefault()
     if (window.confirm(`Sure you want to delete ${blog.title}?`)) {
-      remove(blog)
+      dispatch(removeBlog(blog.id))
     }
   }
 
@@ -30,10 +33,10 @@ const Blog = ({ blog, like, remove, user }) => {
       {showDetails &&
         <div className='flex flex-vertical testing-blog-details'>
           <span>{blog.url}</span>
-          <span id="likes">Likes: {blog.likes} <button id="like-button" onClick={likeBlog}>Like</button></span>
-          <span>Added by {user.name}</span>
-          {blog.user.username === user.username &&
-          <button id="remove-button" onClick={removeBlog}>Remove</button>
+          <span id="likes">Likes: {blog.likes} <button id="like-button" onClick={like}>Like</button></span>
+          <span>Added by {blog.user.name}</span>
+          {blog.user.username === user.credentials.username &&
+          <button id="remove-button" onClick={remove}>Remove</button>
           }
         </div>
       }

@@ -1,4 +1,5 @@
 import blogService from '../services/blogs'
+import { notifyError, notifySuccess } from './notificationReducer'
 
 const blogReducer = (state = [], action) => {
   switch(action.type) {
@@ -32,31 +33,46 @@ export const initBlogs = () => {
 
 export const createBlog = blog => {
   return async dispatch => {
-    const newBlog = await blogService.create(blog)
-    dispatch({
-      type: 'CREATE_BLOG',
-      data: newBlog
-    })
+    try {
+      const newBlog = await blogService.create(blog)
+      dispatch({
+        type: 'CREATE_BLOG',
+        data: newBlog
+      })
+      dispatch(notifySuccess(`Blog post added: ${newBlog.title} by ${newBlog.author}`))
+    } catch(e) {
+      dispatch(notifyError(`${e.response.data.error}`))
+    }
   }
 }
 
 export const likeBlog = blog => {
   return async dispatch => {
-    const updatedBlog = await blogService.update(blog)
-    dispatch({
-      type: 'LIKE_BLOG',
-      data: updatedBlog
-    })
+    try {
+      const updatedBlog = await blogService.update(blog)
+      dispatch({
+        type: 'LIKE_BLOG',
+        data: updatedBlog
+      })
+      dispatch(notifySuccess(`Like added: ${updatedBlog.title} by ${updatedBlog.author}`))
+    } catch(e) {
+      dispatch(notifyError(`${e.response.data.error}`))
+    }
   }
 }
 
 export const removeBlog = id => {
   return async dispatch => {
-    await blogService.remove(id)
-    dispatch({
-      type: 'REMOVE_BLOG',
-      data: id
-    })
+    try {
+      await blogService.remove(id)
+      dispatch({
+        type: 'REMOVE_BLOG',
+        data: id
+      })
+      dispatch(notifySuccess('Blog post deleted'))
+    } catch(e) {
+        dispatch(notifyError(`${e.response.data.error}`))
+    }
   }
 }
 
