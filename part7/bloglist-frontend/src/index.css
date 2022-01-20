@@ -43,6 +43,10 @@ button {
   margin-top: 10vh;
 }
 
+.nav-container * {
+  margin-right: 10px
+}
+
 .bloglist-container {
   margin-top: 2.5em;
 }

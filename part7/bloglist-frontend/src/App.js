@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import LogOutBanner from './components/LogOutBanner'
 import Home from './components/Home'
@@ -9,7 +9,6 @@ import Blog from './components/Blog'
 import { logOut, setUser } from './reducers/loginReducer'
 import { initBlogs } from './reducers/blogReducer'
 import { initUsers } from './reducers/userReducer'
-
 
 const App = () => {
   const user = useSelector(state => state.user)
@@ -33,18 +32,20 @@ const App = () => {
   }, [])
 
   return (
-    <>
-      <h2>Bloglist</h2>
-      <LogOutBanner user={user} handleLogOut={handleLogOut} />
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home user={user} />} />
-          <Route path="/users/:id" element={<User user={user} />} />
-          <Route path="/users" element={<UserList />} />
-          <Route path="/blogs/:id" element={<Blog user={user} />} />
-        </Routes>
-      </Router>
-    </>
+    <Router>
+      <nav className="nav-container flex">
+        <Link to="/">blogs</Link>
+        <Link to="/users">users</Link>
+        <LogOutBanner user={user} handleLogOut={handleLogOut} />
+      </nav>
+      <h2>Bloglist app</h2>
+      <Routes>
+        <Route path="/" element={<Home user={user} />} />
+        <Route path="/users/:id" element={<User user={user} />} />
+        <Route path="/users" element={<UserList />} />
+        <Route path="/blogs/:id" element={<Blog user={user} />} />
+      </Routes>
+    </Router>
   )
 }
 
