@@ -5,6 +5,9 @@ const userReducer = (state = [], action) => {
     case 'INIT_USERS': {
       return action.data
     }
+    case 'GET_USER': {
+      return action.data
+    }
     default:
       return state
   }
@@ -17,6 +20,16 @@ export const initUsers = () => {
     dispatch({
       type: 'INIT_USERS',
       data: users
+    })
+  }
+}
+
+export const getUser = () => {
+  return async dispatch => {
+    const user = await userService.getUser()
+    dispatch({
+      type: 'GET_USER',
+      data: user
     })
   }
 }

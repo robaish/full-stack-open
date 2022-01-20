@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import Blog from './Blog'
 
-const Bloglist = ({ user }) => {
+const BlogList = ({ user }) => {
   const blogs = useSelector(state => state.blogs)
 
   return (
@@ -21,4 +21,4 @@ const Bloglist = ({ user }) => {
   )
 }
 
-export default Bloglist
+export default BlogList

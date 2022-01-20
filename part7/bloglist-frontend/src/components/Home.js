@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import { logIn } from '../reducers/loginReducer'
-import Bloglist from './Bloglist'
+import BlogList from './BlogList'
 import LoginForm from './LoginForm'
 import NewBlogForm from './NewBlogForm'
 import Notification from './Notification'
@@ -32,7 +32,7 @@ const Home = ({ user }) => {
             <Toggleable buttonLabel="Add new blog post" ref={newBlogFormRef}>
               <NewBlogForm addBlog={addBlog} />
             </Toggleable>
-            <Bloglist user={user} />
+            <BlogList user={user} />
           </div>
         }
       </div>
