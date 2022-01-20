@@ -6,6 +6,9 @@ const blogReducer = (state = [], action) => {
     case 'INIT_BLOGS': {
       return action.data
     }
+    case 'GET_BLOG': {
+      return action.data
+    }
     case 'CREATE_BLOG': {
       return [...state, action.data]
     }
@@ -27,6 +30,16 @@ export const initBlogs = () => {
     dispatch({
       type: 'INIT_BLOGS',
       data: blogs
+    })
+  }
+}
+
+export const getBlog = () => {
+  return async dispatch => {
+    const blog = await blogService.getBlog()
+    dispatch({
+      type: 'GET_BLOG',
+      data: blog
     })
   }
 }

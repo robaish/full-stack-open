@@ -1,16 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useMatch } from 'react-router-dom'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ user }) => {
   const dispatch = useDispatch()
+  const blogs = useSelector(state => state.blogs)
   const users = useSelector(state => state.users)
-  const [showDetails, setShowDetails] = useState(false)
-  const buttonLabel = showDetails ? 'Hide' : 'View'
-
-  const toggleDetails = () => {
-    setShowDetails(!showDetails)
-  }
 
   const like = event => {
     event.preventDefault()
@@ -25,17 +21,19 @@ const Blog = ({ blog, user }) => {
     }
   }
 
-  const blogUser = typeof blog.user === 'string'
-  ? users.find(u => u.id === blog.user)
-  : blog.user
+  const match = useMatch('/blogs/:id')
+  const blog = match
+    ? blogs.find(b => b.id === match.params.id)
+    : null
 
-  return (
-    <div className='blog-container'>
-      <div className='flex flex-jc-sb testing-blog-defaults'>
-        {`${blog.title} – ${blog.author}`}
-        <button id="blog-details-button" onClick={toggleDetails}>{buttonLabel}</button>
-      </div>
-      {showDetails &&
+  if (blog) {
+    const blogUser = typeof blog.user === 'string'
+      ? users.find(u => u.id === blog.user)
+      : blog.user
+
+    return (
+      <div>
+        <h2>{blog.title}</h2>
         <div className='flex flex-vertical testing-blog-details'>
           <span>{blog.url}</span>
           <span id="likes">Likes: {blog.likes} <button id="like-button" onClick={like}>Like</button></span>
@@ -44,9 +42,10 @@ const Blog = ({ blog, user }) => {
           <button id="remove-button" onClick={remove}>Remove</button>
           }
         </div>
-      }
-    </div>
-  )
+      </div>
+    )
+  }
+  return null
 }
 
 export default Blog
