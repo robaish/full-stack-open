@@ -23,6 +23,14 @@
   justify-content: space-between;
 }
 
+.flex-end {
+ justify-content: flex-end; 
+}
+
+.flex-ai-c {
+  align-items: center;
+}
+
 /* Buttons */
 button {
   display: inline-block;
@@ -50,6 +58,11 @@ button {
   padding: 0.5em;
   border-radius: 0.5em;
   background-color: #f1f1f18f; 
+}
+
+.users-container {
+  width: 90vw;
+  max-width: 360px;
 }
 
 /* Notifications */

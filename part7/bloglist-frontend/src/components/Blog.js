@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 
 const Blog = ({ blog, user }) => {
   const dispatch = useDispatch()
+  const users = useSelector(state => state.users)
   const [showDetails, setShowDetails] = useState(false)
   const buttonLabel = showDetails ? 'Hide' : 'View'
 
@@ -24,6 +25,10 @@ const Blog = ({ blog, user }) => {
     }
   }
 
+  const blogUser = typeof blog.user === 'string'
+  ? users.find(u => u.id === blog.user)
+  : blog.user
+
   return (
     <div className='blog-container'>
       <div className='flex flex-jc-sb testing-blog-defaults'>
@@ -34,8 +39,8 @@ const Blog = ({ blog, user }) => {
         <div className='flex flex-vertical testing-blog-details'>
           <span>{blog.url}</span>
           <span id="likes">Likes: {blog.likes} <button id="like-button" onClick={like}>Like</button></span>
-          <span>Added by {blog.user.name}</span>
-          {blog.user.username === user.credentials.username &&
+          <span>Added by {blogUser.name}</span>
+          {blogUser.username === user.credentials.username &&
           <button id="remove-button" onClick={remove}>Remove</button>
           }
         </div>

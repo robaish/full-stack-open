@@ -1,59 +1,45 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { logIn, logOut } from './reducers/userReducer'
-import { initBlogs, createBlog } from './reducers/blogReducer'
-import LoginForm from './components/LoginForm'
-import NewBlogForm from './components/NewBlogForm'
-import Bloglist from './components/Bloglist'
-import Toggleable from './components/Toggleable'
-import Notification from './components/Notification'
+import Home from './components/Home'
+import Users from './components/Users'
+import { logOut, setUser } from './reducers/loginReducer'
+import { initBlogs } from './reducers/blogReducer'
+import { initUsers } from './reducers/userReducer'
+import LogOutBanner from './components/LogOutBanner'
 
 const App = () => {
-  const dispatch = useDispatch()
   const user = useSelector(state => state.user)
-
-  useEffect(() => {
-    dispatch(initBlogs())
-  }, [dispatch])
-
-  const handleLogin = async (username, password) => {
-    console.log('%c logging in with:', 'color: orange;', username, password)
-    dispatch(logIn(username, password))
-  }
+  const dispatch = useDispatch()
 
   const handleLogOut = () => {
     dispatch(logOut())
   }
 
-  const newBlogFormRef = useRef()
+  useEffect(() => {
+    dispatch(initBlogs())
+    dispatch(initUsers())
+  }, [dispatch])
 
-  const addBlog = newBlog => {
-    dispatch(createBlog(newBlog))
-    newBlogFormRef.current.toggleVisibility()
-  }
+  useEffect(() => {
+    const loggedInUserJSON = window.localStorage.getItem('loggedInBloglistUser')
+    if (loggedInUserJSON) {
+      const userData = JSON.parse(loggedInUserJSON)
+      dispatch(setUser(userData))
+    }
+  }, [])
 
   return (
-    <div className="app-wrapper">
-      <Notification className="notification-bar" />
-      {user.credentials === null
-      ? <LoginForm handleLogin={handleLogin} />
-      : <div>
-          <h2>Bloglist</h2>
-          <div>
-            <span>{user.credentials.name} logged in</span>
-            <button
-              type="button"
-              onClick={handleLogOut}>
-              Log out
-            </button>
-          </div>
-          <Toggleable buttonLabel="Add new blog post" ref={newBlogFormRef}>
-            <NewBlogForm addBlog={addBlog} />
-          </Toggleable>
-          <Bloglist user={user} />
-        </div>
-      }
-    </div>
+    <>
+      <h2>Bloglist</h2>
+      <LogOutBanner user={user} handleLogOut={handleLogOut} />
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home user={user} />} />
+          <Route path="/users" element={<Users />} />
+        </Routes>
+      </Router>
+    </>
   )
 }
 

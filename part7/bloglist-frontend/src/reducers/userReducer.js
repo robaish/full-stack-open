@@ -1,39 +1,23 @@
-import loginService from '../services/login'
-import blogService from '../services/blogs'
-import { notifyError, notifySuccess } from './notificationReducer'
+import userService from '../services/users'
 
-const userReducer = (state = { credentials: null }, action) => {
+const userReducer = (state = [], action) => {
   switch(action.type) {
-    case 'LOGIN': {
-      return { ...state, credentials: action.data }
-    }
-    case 'LOGOUT': {
-      return { ...state, credentials: null }
+    case 'INIT_USERS': {
+      return action.data
     }
     default:
       return state
   }
 }
 
-export const logIn = (username, password) => {
+// Action creators
+export const initUsers = () => {
   return async dispatch => {
-    try {
-      const userData = await loginService.login({ username, password })
-      blogService.setToken(userData.token)
-      dispatch({
-        type: 'LOGIN',
-        data: userData
-      })
-      dispatch(notifySuccess('Welcome back.'))
-      } catch(e) {
-          dispatch(notifyError(`${e.response.data.error}`))
-      }
-  }
-}
-
-export const logOut = () => {
-  return {
-    type: 'LOGOUT'
+    const users = await userService.getAll()
+    dispatch({
+      type: 'INIT_USERS',
+      data: users
+    })
   }
 }
 
