@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import LogOutBanner from './components/LogOutBanner'
+import Notification from './components/Notification'
 import Home from './components/Home'
 import UserList from './components/UserList'
 import User from './components/User'
@@ -38,6 +39,7 @@ const App = () => {
         <Link to="/users">users</Link>
         <LogOutBanner user={user} handleLogOut={handleLogOut} />
       </nav>
+      <Notification className="notification-bar" />
       <h2>Bloglist app</h2>
       <Routes>
         <Route path="/" element={<Home user={user} />} />

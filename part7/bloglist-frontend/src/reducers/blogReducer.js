@@ -15,6 +15,9 @@ const blogReducer = (state = [], action) => {
     case 'LIKE_BLOG': {
       return state.map(blog => blog.id === action.data.id ? action.data : blog)
     }
+    case 'ADD_COMMENT': {
+      return state.map(blog => blog.id === action.data.id ? action.data : blog)
+    }
     case 'REMOVE_BLOG': {
       return state.filter(blog => blog.id !== action.data)
     }
@@ -68,6 +71,21 @@ export const likeBlog = blog => {
         data: updatedBlog
       })
       dispatch(notifySuccess(`Like added: ${updatedBlog.title} by ${updatedBlog.author}`))
+    } catch(e) {
+      dispatch(notifyError(`${e.response.data.error}`))
+    }
+  }
+}
+
+export const addComment = (blog, comment) => {
+  return async dispatch => {
+    try {
+      const updatedBlog = await blogService.addComment(blog, comment)
+      dispatch({
+        type: 'ADD_COMMENT',
+        data: updatedBlog
+      })
+      dispatch(notifySuccess('Thanks for your input!'))
     } catch(e) {
       dispatch(notifyError(`${e.response.data.error}`))
     }

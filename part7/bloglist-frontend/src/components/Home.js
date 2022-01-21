@@ -5,7 +5,6 @@ import { logIn } from '../reducers/loginReducer'
 import BlogList from './BlogList'
 import LoginForm from './LoginForm'
 import NewBlogForm from './NewBlogForm'
-import Notification from './Notification'
 import Toggleable from './Toggleable'
 
 const Home = ({ user }) => {
@@ -25,7 +24,6 @@ const Home = ({ user }) => {
 
   return (
     <div className="app-wrapper">
-        <Notification className="notification-bar" />
         {user.credentials === null
         ? <LoginForm handleLogin={handleLogin} />
         : <div>

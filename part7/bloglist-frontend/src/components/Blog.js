@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMatch } from 'react-router-dom'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
+import BlogComments from './BlogComments'
 
 const Blog = ({ user }) => {
   const dispatch = useDispatch()
@@ -31,25 +32,17 @@ const Blog = ({ user }) => {
       ? users.find(u => u.id === blog.user)
       : blog.user
 
-  const comments = blog.comments.length > 0
-    ? <ul>{blog.comments.map(
-      item => <li key={item}>{item}</li>)}</ul>
-    : <p>No comments yet.</p>
-
     return (
       <div>
         <h2>{blog.title}</h2>
         <div className='flex flex-vertical testing-blog-details'>
-          <span>{blog.url}</span>
+          <a href={blog.url}>{blog.url}</a>
           <span id="likes">Likes: {blog.likes} <button id="like-button" onClick={like}>Like</button></span>
           <span>Added by {blogUser.name}</span>
           {blogUser.username === user.credentials.username &&
           <button id="remove-button" onClick={remove}>Remove</button>
           }
-          <div>
-            <h3>Comments</h3>
-            {comments}
-          </div>
+          <BlogComments blog={blog} />
         </div>
       </div>
     )
