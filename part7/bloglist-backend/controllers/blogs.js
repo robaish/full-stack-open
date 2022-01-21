@@ -60,6 +60,17 @@ blogsRouter.put('/:id', async (req, res) => {
     res.json(updatedBlog)
 })
 
+// ADD COMMENT
+blogsRouter.post('/:id/comments', async (req, res) => {
+  const body = req.body
+
+  const updatedBlog = await Blog
+    .findByIdAndUpdate(req.params.id,
+      {"$push": {"comments": body.comment } }, { new: true })
+
+  res.json(updatedBlog)
+})
+
 // DELETE BLOG
 blogsRouter.delete('/:id', userExtractor, async (req, res) => {
   const body = req.body

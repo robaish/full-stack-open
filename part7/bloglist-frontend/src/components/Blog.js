@@ -31,6 +31,11 @@ const Blog = ({ user }) => {
       ? users.find(u => u.id === blog.user)
       : blog.user
 
+  const comments = blog.comments.length > 0
+    ? <ul>{blog.comments.map(
+      item => <li key={item}>{item}</li>)}</ul>
+    : <p>No comments yet.</p>
+
     return (
       <div>
         <h2>{blog.title}</h2>
@@ -41,6 +46,10 @@ const Blog = ({ user }) => {
           {blogUser.username === user.credentials.username &&
           <button id="remove-button" onClick={remove}>Remove</button>
           }
+          <div>
+            <h3>Comments</h3>
+            {comments}
+          </div>
         </div>
       </div>
     )
