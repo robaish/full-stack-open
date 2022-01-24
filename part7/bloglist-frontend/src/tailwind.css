@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+
+/*
+.notification {
+  position: absolute;
+  top: 20px;
+  width: 90vw;
+  max-width: 1140px;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  font-size: 1rem;
+}
+
+.success {
+  background: #E0F3EF;
+  color: #005538;
+}
+
+.warning {
+  background: #FDF7DE;
+  color: #EDB600;
+}
+
+.error {
+  background: #FBE9E7;
+  color: #F24E1E;
+}
+*/

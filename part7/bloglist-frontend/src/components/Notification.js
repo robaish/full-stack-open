@@ -8,10 +8,18 @@ const Notification = () => {
     return null
   }
   if (notification.status === 'success') {
-    return <div className="notification success">{notification.message}</div>
+    return (
+      <div
+        className="absolute top-12 left-1/2 -translate-x-1/2 bg-success rounded-md px-4 text-gr1">
+        {notification.message}
+      </div>)
   }
   if (notification.status === 'error') {
-    return <div className="notification error">{notification.message}</div>
+    return (
+      <div
+        className="absolute top-12 left-1/2 -translate-x-1/2 bg-error rounded-md px-4 text-gr1">
+        {notification.message}
+      </div>)
   }
 }
 

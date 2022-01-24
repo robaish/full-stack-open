@@ -23,16 +23,16 @@ const Home = ({ user }) => {
   }
 
   return (
-    <div className="app-wrapper">
-        {user.credentials === null
-        ? <LoginForm handleLogin={handleLogin} />
-        : <div>
-            <Toggleable buttonLabel="Add new blog post" ref={newBlogFormRef}>
-              <NewBlogForm addBlog={addBlog} />
-            </Toggleable>
-            <BlogList user={user} />
-          </div>
-        }
+    <div className="mx-auto max-w-lg">
+      {user.credentials === null
+      ? <LoginForm handleLogin={handleLogin} />
+      : <div className="mx-auto max-w-lg flex flex-col justify-center">
+          <BlogList user={user} />
+          <Toggleable buttonLabel="Add new blog post" ref={newBlogFormRef}>
+            <NewBlogForm addBlog={addBlog} />
+          </Toggleable>
+        </div>
+      }
       </div>
   )
 }

@@ -13,15 +13,15 @@ const User = () => {
   if (user) {
     return user.blogs.length > 0
     ?
-      <div>
-        <h2>{user.name}</h2>
-        <h3>Blog posts added</h3>
+      <div className="mx-auto w-11/12 max-w-lg py-10 space-y-5 text-gr1 flex flex-col justify-center">
+        <h2 className="text-3xl font-bold my-10">{user.name}</h2>
+        <h3 className="text-lg font-bold">Blog posts added</h3>
         <ul>
           {user.blogs.map(blog => <li key={blog.id}>{blog.title}</li>)}
         </ul>
       </div>
-    : <div>
-        <h2>{user.name}</h2>
+    : <div className="mx-auto w-11/12 max-w-lg py-10 space-y-5 text-gr1 flex flex-col justify-center">
+        <h2 className="text-3xl font-bold">{user.name}</h2>
         <p>...has not added any blog posts yet.</p>
       </div>
   }
