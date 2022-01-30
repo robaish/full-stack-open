@@ -18,7 +18,7 @@ query {
   }
 }
 `
-export const ADD_BOOK = gql `
+export const ADD_BOOK = gql`
 mutation addBook(
   $title: String!,
   $author: String!,
@@ -34,6 +34,21 @@ mutation addBook(
     author
     published
     genres
+  }
+}
+`
+
+export const SET_AUTHOR_BIRTHYEAR = gql`
+mutation setAuthorBirthyear(
+  $name: String!,
+  $born: Int!
+) {
+  editAuthor(
+    name: $name,
+    setBornTo: $born
+  ) {
+    name
+    born
   }
 }
 `
