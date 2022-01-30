@@ -63,19 +63,19 @@ const Authors = ({ show, setError }) => {
       <h3>Set birthyear</h3>
       <form onSubmit={submit}>
         <div>
-          <label htmlFor="name" />
-          Name
-          <input
-            type="text"
-            name="name"
-            id="name"
+        <label htmlFor="author-select">Author</label>
+          <select
+            name="author"
+            id="author-select"
             value={name}
-            onChange={({target}) => setName(target.value)}
-          />
+            onChange={({target}) => setName(target.value)}>
+            {authors.map(a => 
+              <option key={a.name} value={a.name}>{a.name}</option>
+            )}
+          </select>
         </div>
         <div>
-          <label htmlFor="born" />
-          Born
+          <label htmlFor="born">Born</label>
           <input
             type="text"
             name="born"
