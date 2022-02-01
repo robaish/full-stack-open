@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "node index.js",
+    "apollo": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -12,7 +13,13 @@
   "dependencies": {
     "apollo-server": "^3.6.2",
     "apollo-server-core": "^3.6.2",
+    "dotenv": "^15.0.0",
     "graphql": "^16.2.0",
+    "mongoose": "^6.1.8",
+    "mongoose-unique-validator": "^3.0.0",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
