@@ -63,22 +63,27 @@ const resolvers = {
     authorCount: () => Author.collection.countDocuments(),
     allBooks: async (root, { author = '', genre = ''}) => {
       if (author === '' && genre !== '') {
-        const books = await Book.find(genres.includes(genre))
+        const books = await Book
+          .find({ genres: { $in: [ genre ] } })
+          .populate('author')
         return books
       }
       if (author !== '' && genre === '') {
         const authorObj = await Author.findOne({ name: author })
-        const books = await Book.find( { author: authorObj._id })
+        const books = await Book
+          .find( { author: authorObj._id })
+          .populate('author')
         return books
       }
       if (author !== '' && genre !== '') {
         const authorObj = await Author.findOne({ name: author })
-        const books = await Book.find( { $and: [
-          { author: authorObj._id },
-          { genres: { $in: [ genre ] } }
-        ] })
+        const books = await Book
+          .find( { $and: [ { author: authorObj._id }, { genres: { $in: [ genre ] } } ] } )
+          .populate('author')
         return books
       }
+      const books = await Book.find({}).populate('author')
+      return books
     },
     allAuthors: async (root, args) => {
       const authors = await Author.find({})
@@ -127,7 +132,13 @@ const resolvers = {
       const author = await Author.findOne({ name: args.name })
       if (author) {
         author.born = args.setBornTo
-        await author.save()
+        try {
+          await author.save()
+        } catch (error) {
+          throw new UserInputError(error.message, {
+            invalidArgs: args,
+          })
+        }
         return author
       }
       return null
