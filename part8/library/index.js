@@ -61,18 +61,24 @@ const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
-    allBooks: async (root, args) => {
-      // if (author === '' && genre !== '') {
-      //   return books.filter(b => b.genres.includes(genre))
-      // }
-      // if (author !== '' && genre === '') {
-      //   return books.filter(b => b.author === author)
-      // }
-      // if (author !== '' && genre !== '') {
-      //   return books.filter(b => b.author === author && b.genres.includes(genre))
-      // }
-      const books = await Book.find({})
-      return books
+    allBooks: async (root, { author = '', genre = ''}) => {
+      if (author === '' && genre !== '') {
+        const books = await Book.find(genres.includes(genre))
+        return books
+      }
+      if (author !== '' && genre === '') {
+        const authorObj = await Author.findOne({ name: author })
+        const books = await Book.find( { author: authorObj._id })
+        return books
+      }
+      if (author !== '' && genre !== '') {
+        const authorObj = await Author.findOne({ name: author })
+        const books = await Book.find( { $and: [
+          { author: authorObj._id },
+          { genres: { $in: [ genre ] } }
+        ] })
+        return books
+      }
     },
     allAuthors: async (root, args) => {
       const authors = await Author.find({})
@@ -80,16 +86,15 @@ const resolvers = {
     }
   },
   Author: {
-    bookCount: root => {
-      const authorBooks = books.filter(b => b.author === root.name)
-      return authorBooks.length
+    bookCount: async root => {
+      const booksByAuthor = await Book.find( { author: root._id } )
+      return booksByAuthor.length
     }
   },
   Mutation: {
     addBook: async (root, args) => {
-      const book = new Book({...args})
-      const author = await Author.findOne({ name: args.author})
-      
+      const book = new Book({ ...args })
+      const author = await Author.findOne({ name: args.author })
       if (!author) {
         const newAuthor = new Author({ name: args.author })
         await newAuthor.save()
@@ -108,7 +113,7 @@ const resolvers = {
       return book
     },
     addAuthor: async (root, args) => {
-      const author = new Author({...args})
+      const author = new Author({ ...args })
       try {
         await author.save()
       } catch (error) {
@@ -118,12 +123,12 @@ const resolvers = {
       }
       return author
     },
-    editAuthor: (root, args) => {
-      const author = authors.find(a => a.name === args.name)
+    editAuthor: async (root, args) => {
+      const author = await Author.findOne({ name: args.name })
       if (author) {
-        const updatedAuthor = { ...author, born: args.setBornTo }
-        authors = authors.map(a => a.name === args.name ? updatedAuthor : a)
-        return updatedAuthor
+        author.born = args.setBornTo
+        await author.save()
+        return author
       }
       return null
     }
