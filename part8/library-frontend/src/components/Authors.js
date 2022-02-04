@@ -4,7 +4,7 @@ import { ALL_AUTHORS, SET_AUTHOR_BIRTHYEAR } from '../queries'
 
 const Authors = ({ show, setError }) => {
   const { loading, error, data } = useQuery(ALL_AUTHORS)
-  const [name, setName] = useState('')
+  const [name, setName] = useState('Neil Gaiman')
   const [born, setBorn] = useState('')
 
   const [ setAuthorBirthyear, result ] = useMutation(SET_AUTHOR_BIRTHYEAR, {
