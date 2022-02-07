@@ -2,7 +2,7 @@ import { useLazyQuery } from '@apollo/client'
 import React, { useEffect, useState } from 'react'
 import { BOOKS_IN_GENRE } from '../queries'
 
-const Recommendations = ({ show, userData }) => {
+const Recommendations = ({ show, userData, update }) => {
   const [user, setUser] = useState(null)
   const [getBookRecs, result] = useLazyQuery(BOOKS_IN_GENRE)
 
@@ -19,6 +19,14 @@ const Recommendations = ({ show, userData }) => {
       variables: { genre: favGenre }
     })
   }, [user]) //eslint-disable-line
+
+  useEffect(() => {
+    if (update === true) {
+      getBookRecs({
+        variables: { genre: favGenre }
+      })
+    }
+  }, []) //eslint-disable-line
   
   if (!show) return null
 

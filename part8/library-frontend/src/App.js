@@ -12,6 +12,7 @@ const App = () => {
   const [page, setPage] = useState('authors')
   const [token, setToken] = useState(null)
   const [getUser, result] = useLazyQuery(GET_USER)
+  const [update, setUpdate] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const client = useApolloClient()
 
@@ -60,6 +61,7 @@ const App = () => {
       />
       <Books
         show={page === 'books'}
+        setUpdate={setUpdate}
       />
       <NewBook
         show={page === 'add book'}
@@ -69,6 +71,7 @@ const App = () => {
       <Recommendations
         show={page === 'recommendations'}
         userData={result ? result.data : null}
+        update={update}
       />
       <Login
         show={page === 'login'}

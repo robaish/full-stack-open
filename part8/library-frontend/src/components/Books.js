@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { ALL_BOOKS } from '../queries'
 
-const Books = ({ show }) => {
+const Books = ({ show, setUpdate }) => {
   const { loading, error, data } = useQuery(ALL_BOOKS)
   const [books, setBooks] = useState(null)
   const [genre, setGenre] = useState(null)
@@ -10,8 +10,9 @@ const Books = ({ show }) => {
   useEffect(() => {
     if (data) {
       setBooks(data.allBooks)
+      setUpdate(true)
     }
-  }, [data])
+  }, [data]) //eslint-disable-line
 
   if (!show) {
     return null
