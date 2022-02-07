@@ -1,43 +1,58 @@
-import { useQuery } from '@apollo/client'
-import React from 'react'
-import { GET_USER } from '../queries'
+import { useLazyQuery } from '@apollo/client'
+import React, { useEffect, useState } from 'react'
+import { BOOKS_IN_GENRE } from '../queries'
 
-const Recommendations = ({ show, books }) => {
-  const { loading, error, data } = useQuery(GET_USER, {
-    pollInterval: 1000 // pointless web traffic but the only way I got this to work
-  })
+const Recommendations = ({ show, userData }) => {
+  const [user, setUser] = useState(null)
+  const [getBookRecs, result] = useLazyQuery(BOOKS_IN_GENRE)
 
+  useEffect(() => {
+    if (userData && userData !== null) {
+      setUser(userData.me)
+    }
+  }, [userData])
+
+  const favGenre = user !== null ? user.favoriteGenre : ''
+
+  useEffect(() => {
+    getBookRecs({
+      variables: { genre: favGenre }
+    })
+  }, [user]) //eslint-disable-line
+  
   if (!show) return null
-  if (loading || data.me === null) return 'Loading...'
-  if (error) return `Error: ${error}`
 
-  const recommendedBooks = books.filter(b => b.genres.includes(data.me.favoriteGenre))
-
-  return (
-    <div>
-      <h3>Books in your favorite genre, {data.me.favoriteGenre}</h3>
-      <table>
-        <tbody>
-          <tr>
-            <th></th>
-            <th>
-              author
-            </th>
-            <th>
-              published
-            </th>
-          </tr>
-          {recommendedBooks.map(book =>
-            <tr key={book.title}>
-              <td>{book.title}</td>
-              <td>{book.author.name}</td>
-              <td>{book.published}</td>
+  if (result.data && user) {
+    return (
+      <div>
+        <h3>Hi, {user.username}</h3>
+        <p>Here are books in your favorite genre, <strong>{user.favoriteGenre}:</strong></p>
+        <table>
+          <tbody>
+            <tr>
+              <th></th>
+              <th>
+                author
+              </th>
+              <th>
+                published
+              </th>
             </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
-  )
+            {
+            result.data.allBooks.map(book =>
+              <tr key={book.title}>
+                <td>{book.title}</td>
+                <td>{book.author.name}</td>
+                <td>{book.published}</td>
+              </tr>
+            )
+            }
+          </tbody>
+        </table>
+      </div>
+    )
+  }
+  return 'Loading...'
 }
 
 export default Recommendations
