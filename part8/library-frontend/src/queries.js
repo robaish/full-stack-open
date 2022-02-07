@@ -21,6 +21,16 @@ query {
   }
 }
 `
+
+export const GET_USER = gql`
+query {
+  me {
+    username
+    favoriteGenre
+  }
+}
+`
+
 export const ADD_BOOK = gql`
 mutation addBook(
   $title: String!,
