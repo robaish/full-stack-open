@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client'
 import React, { useState } from 'react'
 import { ADD_BOOK, ALL_AUTHORS, ALL_BOOKS } from '../queries'
 
-const NewBook = ({ show, notify, setPage }) => {
+const NewBook = ({ show, notify, setPage, updateCacheWith }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
@@ -18,6 +18,9 @@ const NewBook = ({ show, notify, setPage }) => {
       if (graphQLErrors.length > 0) {
         notify('error', graphQLErrors[0].message)
       }
+    },
+    update: (store, response) => {
+      updateCacheWith(response.data.addBook)
     }
   })
 
