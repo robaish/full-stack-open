@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client'
 import React, { useState } from 'react'
 import { ADD_BOOK, ALL_AUTHORS, ALL_BOOKS } from '../queries'
 
-const NewBook = ({ show, setError, setPage }) => {
+const NewBook = ({ show, notify, setPage }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
@@ -16,7 +16,7 @@ const NewBook = ({ show, setError, setPage }) => {
     ],
     onError: ({ graphQLErrors }) => {
       if (graphQLErrors.length > 0) {
-        setError(graphQLErrors[0].message)
+        notify('error', graphQLErrors[0].message)
       }
     }
   })

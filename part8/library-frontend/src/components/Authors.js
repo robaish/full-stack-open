@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useMutation, useQuery } from '@apollo/client'
 import { ALL_AUTHORS, SET_AUTHOR_BIRTHYEAR } from '../queries'
 
-const Authors = ({ show, setError }) => {
+const Authors = ({ show, notify }) => {
   const { loading, error, data } = useQuery(ALL_AUTHORS)
   const [name, setName] = useState('Neil Gaiman')
   const [born, setBorn] = useState('')
@@ -11,7 +11,7 @@ const Authors = ({ show, setError }) => {
     refetchQueries: [ { query: ALL_AUTHORS }],
     onError: ({ graphQLErrors }) => {
       if (graphQLErrors.length > 0) {
-        setError(graphQLErrors[0].message)
+        notify('error', graphQLErrors[0].message)
       }
     }
   })
@@ -25,7 +25,7 @@ const Authors = ({ show, setError }) => {
 
   useEffect(() => {
     if (result.data && result.data.editAuthor === null) {
-      setError('Author not found.')
+      notify('error', 'Author not found.')
     }
   }, [result.data]) // eslint-disable-line 
 
