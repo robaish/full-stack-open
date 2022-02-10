@@ -1,7 +1,25 @@
-interface bmiValues {
+export interface bmiValues {
   height: number;
   weight: number;
 }
+
+export const calculateBmi = (height: number, weight: number) => {
+  const heightInMeters = height / 100;
+  const bmi = weight / Math.pow(heightInMeters, 2);
+
+  if (bmi < 18.5) {
+    return 'Underweight';
+  } else if (bmi < 25) {
+    return 'Normal (healthy weight)';
+  } else if (bmi < 30) {
+    return 'Overweight';
+  } else {
+    return 'Obese';
+  }
+}
+
+/*
+Used for command line calculator:
 
 const parseBmiArgs = (args: string[]): bmiValues => {
   if (args.length < 4) throw new Error("Not enough arguments - you need to give exactly 2.");
@@ -17,27 +35,16 @@ const parseBmiArgs = (args: string[]): bmiValues => {
   }
 }
 
-const calculateBmi = (height: number, weight: number) => {
-  const heightInMeters = height / 100;
-  const bmi = weight / (heightInMeters * heightInMeters);
-  if (bmi < 18.5) {
-    console.log('Underweight');
-  } else if (bmi < 25) {
-    console.log('Normal (healthy weight)');
-  } else if (bmi < 30) {
-    console.log('Overweight');
-  } else {
-    console.log('Obese');
-  }
+const calculateFromCommandLine = () => {
+  try {
+    const { height, weight } = parseBmiArgs(process.argv);
+    calculateBmi(height, weight); 
+   } catch (error) {
+     let errorMessage = 'There\'s been an error.';
+     if (error instanceof Error) {
+       errorMessage += ' Error: ' + error.message;
+     }
+     console.log(errorMessage);
+   }
 }
-
-try {
- const { height, weight } = parseBmiArgs(process.argv);
- calculateBmi(height, weight); 
-} catch (error) {
-  let errorMessage = 'There\'s been an error.';
-  if (error instanceof Error) {
-    errorMessage += ' Error: ' + error.message;
-  }
-  console.log(errorMessage);
-}
+*/
