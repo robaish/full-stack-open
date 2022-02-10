@@ -13,6 +13,12 @@ interface ExerciseParams {
   target: number;
 }
 
+interface Ratings {
+  1: string;
+  2: string;
+  3: string;
+}
+
 const parseArgs = (args: string[]): ExerciseParams => {
   if (args.length === 2) throw new Error("Daily target and exercise hours missing.");
   if (args.length === 3) throw new Error("Exercise hours missing.");
@@ -25,21 +31,21 @@ const parseArgs = (args: string[]): ExerciseParams => {
     return {
       exerciseHours: numberArr,
       target: Number(target)
-    }
+    };
   } else {
     throw new Error("All input values must be numbers.");
   }
-}
+};
 
-const calculateExercises = (exerciseHours: number[], target: number) => {
+const calculateExercises = (exerciseHours: number[], target: number): ExerciseResults => {
   const average = exerciseHours.reduce((acc, prev) => acc + prev) / exerciseHours.length;
   const targetDiff = target - average;
   const numberRating = (targetDiff > 0.25) ? 1 : (targetDiff >= 0) ? 2 : 3;
-  const ratings: { [key: string]: any } = {
+  const ratings: Ratings = {
     1: 'Don\'t beat yourself up, rest is important.',
     2: 'Well done.',
     3: 'Boom, you really crushed it!'
-  }
+  };
 
   return {
     periodLength: exerciseHours.length,
@@ -49,8 +55,8 @@ const calculateExercises = (exerciseHours: number[], target: number) => {
     ratingDescription: ratings[numberRating],
     target: target,
     average: average
-  }
-}
+  };
+};
 
 try {
   const { exerciseHours, target } = parseArgs(process.argv);

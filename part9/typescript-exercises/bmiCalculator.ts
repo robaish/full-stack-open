@@ -16,7 +16,7 @@ export const calculateBmi = (height: number, weight: number) => {
   } else {
     return 'Obese';
   }
-}
+};
 
 /*
 Used for command line calculator:
