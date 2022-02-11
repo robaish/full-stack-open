@@ -8,36 +8,13 @@ interface ExerciseResults {
   average: number;
 }
 
-interface ExerciseParams {
-  exerciseHours: number[];
-  target: number;
-}
-
 interface Ratings {
   1: string;
   2: string;
   3: string;
 }
 
-const parseArgs = (args: string[]): ExerciseParams => {
-  if (args.length === 2) throw new Error("Daily target and exercise hours missing.");
-  if (args.length === 3) throw new Error("Exercise hours missing.");
-  
-  const [ , , target, ...exerciseHours ] = args;
-  const allInputsAreNumbers = exerciseHours.every(input => !isNaN(Number(input)));
-  
-  if (!isNaN(Number(target)) && allInputsAreNumbers) {
-    const numberArr = exerciseHours.map(input => Number(input));
-    return {
-      exerciseHours: numberArr,
-      target: Number(target)
-    };
-  } else {
-    throw new Error("All input values must be numbers.");
-  }
-};
-
-const calculateExercises = (exerciseHours: number[], target: number): ExerciseResults => {
+export const calculateExercises = (exerciseHours: number[], target: number): ExerciseResults => {
   const average = exerciseHours.reduce((acc, prev) => acc + prev) / exerciseHours.length;
   const targetDiff = target - average;
   const numberRating = (targetDiff > 0.25) ? 1 : (targetDiff >= 0) ? 2 : 3;
@@ -58,6 +35,32 @@ const calculateExercises = (exerciseHours: number[], target: number): ExerciseRe
   };
 };
 
+/*
+Used for command line calculator:
+
+interface ExerciseParams {
+  exerciseHours: number[];
+  target: number;
+}
+
+const parseArgs = (args: string[]): ExerciseParams => {
+  if (args.length === 2) throw new Error("Daily target and exercise hours missing.");
+  if (args.length === 3) throw new Error("Exercise hours missing.");
+  
+  const [ , , target, ...exerciseHours ] = args;
+  const allInputsAreNumbers = exerciseHours.every(input => !isNaN(Number(input)));
+  
+  if (!isNaN(Number(target)) && allInputsAreNumbers) {
+    const numberArr = exerciseHours.map(input => Number(input));
+    return {
+      exerciseHours: numberArr,
+      target: Number(target)
+    };
+  } else {
+    throw new Error("All input values must be numbers.");
+  }
+};
+
 try {
   const { exerciseHours, target } = parseArgs(process.argv);
   console.log(calculateExercises(exerciseHours, target));
@@ -68,3 +71,4 @@ try {
   }
   console.log(errorMessage);
 }
+*/
