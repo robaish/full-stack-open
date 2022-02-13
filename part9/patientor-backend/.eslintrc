@@ -25,6 +25,8 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": ["./tsconfig.json"]
+    "project": "./tsconfig.json",
+    "tsconfigRootDir": "../full-stack-open/part9/patientor-backend/",
+    "sourceType": "module"
   }
 }
