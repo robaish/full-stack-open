@@ -1,9 +1,9 @@
 import express from 'express';
-import DiagnoseService from '../services/diagnoseService';
+import diagnoseService from '../services/diagnoseService';
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-  const diagnoses = DiagnoseService.getEntries();
+  const diagnoses = diagnoseService.getEntries();
   res.send(diagnoses);
 });
 
