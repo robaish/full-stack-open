@@ -1,4 +1,7 @@
-[
+import { PatientNoSSN } from '../src/types';
+import { toNewPatient } from '../src/utils';
+
+const data = [
   {
       "id": "d2773336-f723-11e9-8f0b-362b9e155667",
       "name": "John McClane",
@@ -39,4 +42,12 @@
       "gender": "male",
       "occupation": "Digital evangelist"
   }
-]
+];
+
+const patients: PatientNoSSN[] = data.map(obj => {
+    const object = toNewPatient(obj) as unknown as PatientNoSSN;
+    object.id = obj.id;
+    return object;
+  });
+
+export default patients;

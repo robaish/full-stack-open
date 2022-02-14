@@ -4,6 +4,7 @@ Content-Type: application/json
 {
   "name": "Bob Harris",
   "dateOfBirth": "1959-07-09",
+  "ssn": "070959-101B",
   "gender": "male",
   "occupation": "Actor"
 }
