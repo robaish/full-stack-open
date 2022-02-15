@@ -63,7 +63,8 @@ export const toNewPatient = ({ name, dateOfBirth, ssn, gender, occupation }: Pat
     dateOfBirth: parseDate(dateOfBirth),
     ssn: parseSSN(ssn),
     gender: parseGender(gender),
-    occupation: parseOccupation(occupation)
+    occupation: parseOccupation(occupation),
+    entries: []
   };
   return newPatient;
 };
