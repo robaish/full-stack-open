@@ -7,7 +7,7 @@ import { setPatientData, useStateValue } from '../state';
 import { Patient } from '../types';
 
 const PatientPage: React.FC = () => {
-  const [{ patientData }, dispatch] = useStateValue();
+  const [{ patientData, diagnoses }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
   const patient = Object.values(patientData).find(p => p.id === id);
 
@@ -68,7 +68,10 @@ const PatientPage: React.FC = () => {
             <List.Content>
               <span><em>Diagnostic codes:</em></span>
               <List bulleted={true}>
-                {entry.diagnosisCodes.map(code => <List.Item key={code}>{code}</List.Item>)}
+                {entry.diagnosisCodes.map(code =>
+                <List.Item key={code}>
+                  {code} {Object.values(diagnoses).find(d => d.code === code)?.name}
+                  </List.Item>)}
               </List>
             </List.Content>
           }
