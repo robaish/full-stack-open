@@ -7,7 +7,7 @@ export type Action =
       payload: Patient[];
     }
   | {
-      type: "SET_PATIENT";
+      type: "SET_PATIENT_DATA";
       payload: Patient;
     }
   | {
@@ -28,7 +28,7 @@ export const reducer = (state: State, action: Action): State => {
           ...state.patients
         }
       };
-    case "SET_PATIENT":
+    case "SET_PATIENT_DATA":
       return {
         ...state,
         patientData: {
@@ -47,4 +47,25 @@ export const reducer = (state: State, action: Action): State => {
     default:
       return state;
   }
+};
+
+export const setPatientList = (patientListFromApi: Patient[]): Action => {
+  return {
+    type: "SET_PATIENT_LIST", 
+    payload: patientListFromApi 
+  };
+};
+
+export const setPatientData = (patientDetailsFromApi: Patient): Action => {
+  return {
+    type: "SET_PATIENT_DATA", 
+    payload: patientDetailsFromApi
+  };
+};
+
+export const addPatient = (newPatient: Patient): Action => {
+  return {
+    type: "ADD_PATIENT",
+    payload: newPatient
+  };
 };
