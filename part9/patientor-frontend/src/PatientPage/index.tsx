@@ -1,15 +1,17 @@
 import axios from 'axios';
 import React, { useEffect, } from 'react';
 import { useParams } from 'react-router-dom';
-import { Header, Icon, List } from 'semantic-ui-react';
+import { Header, Icon } from 'semantic-ui-react';
 import { apiBaseUrl } from '../constants';
 import { setPatientData, useStateValue } from '../state';
 import { Patient } from '../types';
+import EntryDetails from './EntryDetails';
 
-const PatientPage: React.FC = () => {
+const PatientPage = () => {
   const [{ patientData, diagnoses }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
   const patient = Object.values(patientData).find(p => p.id === id);
+  const diagnosisArray = Object.values(diagnoses);
 
   useEffect(() => {
     const fetchPatientDetails = async () => {
@@ -57,25 +59,8 @@ const PatientPage: React.FC = () => {
       <p style={{marginBottom: '0.25em'}}>occupation: {patient.occupation}</p>
       {patient.entries.length > 0 && <Header as='h3' content='Entries' />}
       {patient.entries.map(entry => 
-        <List key={entry.id}>
-          <List.Content>
-            <p>
-              <span><strong>{entry.date}</strong></span>
-              <span> ⸻ {entry.description}</span>
-            </p>
-          </List.Content>
-          {entry.diagnosisCodes && 
-            <List.Content>
-              <span><em>Diagnostic codes:</em></span>
-              <List bulleted={true}>
-                {entry.diagnosisCodes.map(code =>
-                <List.Item key={code}>
-                  {code} {Object.values(diagnoses).find(d => d.code === code)?.name}
-                  </List.Item>)}
-              </List>
-            </List.Content>
-          }
-        </List>)}
+        <EntryDetails key={entry.id} entry={entry} diagnosisArray={diagnosisArray} />
+      )}
     </>
   );
 };

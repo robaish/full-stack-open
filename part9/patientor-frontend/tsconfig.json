@@ -20,7 +20,7 @@
     "downlevelIteration": true,
     "allowJs": true,
     "noFallthroughCasesInSwitch": true,
-    "useUnknownInCatchVariables": false,
+    // "useUnknownInCatchVariables": false,
   },
   "include": [
     "src"
