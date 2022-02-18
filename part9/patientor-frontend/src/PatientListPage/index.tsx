@@ -31,9 +31,13 @@ const PatientListPage = () => {
       );
       dispatch(addPatient(newPatient));
       closeModal();
-    } catch (e) {
-      console.error(e.response?.data || 'Unknown Error');
-      setError(e.response?.data?.error || 'Unknown error');
+    } catch (error: unknown) {
+      let errorMessage = 'Something went wrong.';
+      if (axios.isAxiosError(error) && error.response) {
+        console.error(error.response.data);
+        errorMessage = error.response.data.error as string;
+      }
+      setError(errorMessage);
     }
   };
 

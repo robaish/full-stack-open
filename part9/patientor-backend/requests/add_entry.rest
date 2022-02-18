@@ -1,0 +1,15 @@
+POST http://localhost:3001/api/patients/d2773c6e-f723-11e9-8f0b-362b9e155667/entries HTTP/1.1
+Content-Type: application/json
+
+{
+  "date": "2022-02-02",
+  "specialist": "Atul Gawande",
+  "type": "OccupationalHealthcare",
+  "description": "Back pain from too much coding.",
+  "employerName": "University of Helsinki",
+  "sickLeave": {
+    "startDate": "2022-02-02",
+    "endDate": "2022-02"
+  },
+  "diagnosisCodes": ["M51.2", "Z57.1"]
+}
