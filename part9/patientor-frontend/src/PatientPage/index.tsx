@@ -1,9 +1,11 @@
 import axios from 'axios';
-import React, { useEffect, } from 'react';
+import React, { useEffect, useState, } from 'react';
 import { useParams } from 'react-router-dom';
-import { Header, Icon } from 'semantic-ui-react';
+import { Button, Header, Icon } from 'semantic-ui-react';
+import AddEntryModal from '../AddEntryModal';
+import { EntryFormValues } from '../AddEntryModal/AddEntryForm';
 import { apiBaseUrl } from '../constants';
-import { setPatientData, useStateValue } from '../state';
+import { addEntry, setPatientData, useStateValue } from '../state';
 import { Patient } from '../types';
 import EntryDetails from './EntryDetails';
 
@@ -12,6 +14,10 @@ const PatientPage = () => {
   const { id } = useParams<{ id: string }>();
   const patient = Object.values(patientData).find(p => p.id === id);
   const diagnosisArray = Object.values(diagnoses);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = (): void => setModalOpen(true);
+  const closeModal = (): void => setModalOpen(false);
 
   useEffect(() => {
     const fetchPatientDetails = async () => {
@@ -49,6 +55,17 @@ const PatientPage = () => {
 
   const iconName = setGenderIcon(patient);
 
+  const submitNewEntry = async (values: EntryFormValues) => {
+    try {
+      const { data: updatedPatient } = await axios.post<Patient>(
+        `${apiBaseUrl}/patients/${id}/entries`, values);
+      dispatch(addEntry(updatedPatient));
+    } catch (error) {
+      console.log(error);
+    }
+    closeModal();
+  };
+
   return (
     <>
       <div className="flex flex-ai-c">
@@ -61,6 +78,19 @@ const PatientPage = () => {
       {patient.entries.map(entry => 
         <EntryDetails key={entry.id} entry={entry} diagnosisArray={diagnosisArray} />
       )}
+      <AddEntryModal
+        modalOpen={modalOpen}
+        onClose={closeModal}
+        onSubmit={submitNewEntry}
+      />
+      <Button
+        type="button"
+        onClick={openModal}
+        color="green"
+        style={{marginTop: '1em'}}
+      >
+        Add new entry
+      </Button>
     </>
   );
 };

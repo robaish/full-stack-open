@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, List, SemanticCOLORS } from 'semantic-ui-react';
+import { Divider, Icon, List, SemanticCOLORS } from 'semantic-ui-react';
 import { Diagnosis, HealthCheckEntry } from '../types';
 
 const HealthCheck = ({ entry, diagnosisArray }: {
@@ -48,6 +48,7 @@ const HealthCheck = ({ entry, diagnosisArray }: {
       </List.Content>
       }
     </List>
+    <Divider />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, List } from 'semantic-ui-react';
+import { Divider, Icon, List } from 'semantic-ui-react';
 import { Diagnosis, HospitalEntry } from '../types';
 
 const Hospital = ({ entry, diagnosisArray }: {
@@ -29,6 +29,7 @@ const Hospital = ({ entry, diagnosisArray }: {
       </List.Content>
       }
     </List>
+    <Divider />
     </div>
   );
 };

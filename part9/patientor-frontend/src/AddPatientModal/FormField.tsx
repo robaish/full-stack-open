@@ -38,7 +38,7 @@ interface TextProps extends FieldProps {
   placeholder: string;
 }
 
-export const TextField= ({
+export const TextField = ({
   field,
   label,
   placeholder
@@ -57,14 +57,16 @@ export const TextField= ({
 */
 interface NumberProps extends FieldProps {
   label: string;
+  helperText: string;
   errorMessage?: string;
   min: number;
   max: number;
 }
 
-export const NumberField = ({ field, label, min, max } : NumberProps ) => (
+export const NumberField = ({ field, label, helperText, min, max } : NumberProps ) => (
   <Form.Field>
     <label>{label}</label>
+    <span>{helperText}</span>
     <Field {...field} type='number' min={min} max={max} />
 
     <div style={{ color:'red' }}>

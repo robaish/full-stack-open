@@ -26,15 +26,19 @@ const addPatient = (object: NewPatient): Patient => {
   return newPatient;
 };
 
-const addEntry = (patientId: string, object: NewEntry): Patient | undefined => {
+const addEntry = (patientId: string, object: NewEntry): Patient => {
   const patient = patients.find(p => p.id === patientId);
-  if (patient) {
-    const newEntry = {
-      id: generateId(),
-      ...object
-    };
-    patient?.entries.push(newEntry);
+
+  if (!patient) {
+    throw new Error('Patient not found.');
   }
+
+  const newEntry = {
+    id: generateId(),
+    ...object
+  };
+  
+  patient.entries.push(newEntry);
   return patient;
 };
 
