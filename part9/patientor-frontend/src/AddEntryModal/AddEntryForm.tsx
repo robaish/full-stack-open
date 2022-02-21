@@ -50,7 +50,16 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
       type: EntryType.Hospital,
       description: '',
       diagnosisCodes: [],
-      healthCheckRating: 0
+      healthCheckRating: 0,
+      discharge: {
+        date: '',
+        criteria: ''
+      },
+      sickLeave: {
+        startDate: '',
+        endDate: ''
+      },
+      employerName: ''
     }}
     onSubmit={onSubmit}
     validate={values => {
@@ -95,6 +104,12 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
           return errors;
           break;
         case EntryType.OccupationalHealthcare:
+          if (!values.employerName) {
+            errors.employerName = requiredError;
+          } else if (!isString(values.employerName)) {
+            errors.employerName = formatError;
+          }
+
           if (values.sickLeave && isSickLeave(values.sickLeave)) {
             if (values.sickLeave.startDate && values.sickLeave.startDate.length > 0) {
               if (!isDate(values.sickLeave.startDate) || values.sickLeave.startDate.length !== 10) {
@@ -145,6 +160,14 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
             name="date"
             component={TextField}
           />
+          {values.type === EntryType.OccupationalHealthcare &&
+            <Field
+              label="Employer *"
+              placeholder="Employer"
+              name="employerName"
+              component={TextField}
+            />
+          }
           <Field
             label="Specialist  *"
             placeholder="First name and last name"
