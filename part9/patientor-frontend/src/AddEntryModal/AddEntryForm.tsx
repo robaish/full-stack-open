@@ -1,10 +1,10 @@
 import { Field, Form, Formik } from 'formik';
 import React from 'react';
-import { Button } from 'semantic-ui-react';
+import { Button, Header } from 'semantic-ui-react';
 import { DiagnosisSelection, EntryOption, NumberField, SelectField, TextField } from '../AddPatientModal/FormField';
 import { useStateValue } from '../state';
-import { Discharge, EntryType } from '../types';
-import { isDate, isDischarge, isString } from '../utils';
+import { Discharge, EntryType, SickLeave } from '../types';
+import { isDate, isDischarge, isSickLeave, isString } from '../utils';
 
 export type EntryFormValues = {
   date: string,
@@ -14,13 +14,18 @@ export type EntryFormValues = {
   diagnosisCodes?: unknown,
   discharge?: Discharge,
   employerName?: unknown,
-  sickLeave?: unknown,
+  sickLeave?: SickLeave,
   healthCheckRating?: number
 };
 
 type DischargeValues = { [field: string] : {
   date?: string;
   criteria?: string;
+}};
+
+type SickLeaveValues = { [field: string] : {
+  startDate?: string;
+  endDate?: string;
 }};
 
 interface Props {
@@ -52,7 +57,7 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
       const requiredError = 'Field is required';
       const formatError = 'Field is wrongly formatted';
       
-      const errors: { [field: string]: string } | DischargeValues = {};
+      const errors: { [field: string]: string } | DischargeValues | SickLeaveValues = {};
       
       if (!values.date || values.date === '') {
         errors.date = requiredError;
@@ -74,22 +79,38 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
 
       switch (values.type) {
         case EntryType.Hospital:
-          if (values.discharge && !isDischarge(values.discharge)) {
-            errors.discharge = {
-              date: formatError,
-              criteria: formatError
-            };
-          } else if (values.discharge && isDischarge(values.discharge) && values.discharge.date) {
+          if (values.discharge && isDischarge(values.discharge)) {
+            if (values.discharge.date && values.discharge.date.length > 0) {
               if (!isDate(values.discharge.date) || values.discharge.date.length !== 10) {
                 errors.discharge = {
                   date: formatError
                 };
-              }
-              if (!values.discharge.criteria) {
+              } else if (!values.discharge.criteria) {
                 errors.discharge = {
                   criteria: 'Please provide criteria if you enter a discharge date.'
                 };
               }
+            }
+          }
+          return errors;
+          break;
+        case EntryType.OccupationalHealthcare:
+          if (values.sickLeave && isSickLeave(values.sickLeave)) {
+            if (values.sickLeave.startDate && values.sickLeave.startDate.length > 0) {
+              if (!isDate(values.sickLeave.startDate) || values.sickLeave.startDate.length !== 10) {
+                errors.sickLeave = {
+                  startDate: formatError
+                };
+              } else if (!values.sickLeave.endDate) {
+                errors.sickLeave = {
+                  endDate: 'Please provide an end date for the sick leave'
+                };
+              } else if (!isDate(values.sickLeave.endDate) || values.sickLeave.endDate.length !== 10) {
+                errors.sickLeave = {
+                  endDate: formatError
+                };
+              } 
+            }
           }
           return errors;
           break;
@@ -114,24 +135,24 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
       return (
         <Form className="form ui">
           <SelectField
-            label="Entrytype"
+            label="Entrytype *"
             name="type"
             options={entryOptions}
             />
           <Field
-            label="Date"
+            label="Date *"
             placeholder="YYYY-MM-DD"
             name="date"
             component={TextField}
           />
           <Field
-            label="Specialist"
+            label="Specialist  *"
             placeholder="First name and last name"
             name="specialist"
             component={TextField}
           />
           <Field
-            label="Description"
+            label="Description  *"
             placeholder="Description of visit"
             name="description"
             component={TextField}
@@ -143,6 +164,7 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
           />
           {values.type === EntryType.Hospital &&
             <>
+              <Header as={'h4'} content={'Discharge'} />
               <Field
                 label="Discharge date"
                 placeholder="YYYY-MM-DD"
@@ -150,9 +172,26 @@ const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
                 component={TextField}
               />
               <Field
-                label="Discharge criteria"
+                label="Criteria"
                 placeholder="Criteria"
                 name="discharge.criteria"
+                component={TextField}
+              />
+            </>
+          }
+          {values.type === EntryType.OccupationalHealthcare &&
+            <>
+              <Header as={'h4'} content={'Sick leave'} />
+              <Field
+                label="Start date"
+                placeholder="YYYY-MM-DD"
+                name="sickLeave.startDate"
+                component={TextField}
+              />
+              <Field
+                label="End date"
+                placeholder="YYYY-MM-DD"
+                name="sickLeave.endDate"
                 component={TextField}
               />
             </>
