@@ -1,3 +1,5 @@
+import { Discharge } from './types';
+
 export const assertNever = (value: never): never => {
   throw new Error(`Unhandled discriminated union member: ${JSON.stringify(value)}`);
 };
@@ -12,4 +14,9 @@ export const isDate = (date: string): boolean => {
 
 export const isNumber = (value: unknown): value is number => {
   return typeof value === 'number';
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const isDischarge = (object: any): object is Discharge => {
+  return 'date' && 'criteria' in object;
 };

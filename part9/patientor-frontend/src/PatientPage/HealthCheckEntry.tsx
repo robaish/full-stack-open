@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Icon, List, SemanticCOLORS } from 'semantic-ui-react';
+import { Divider, Icon, List, Segment, SemanticCOLORS } from 'semantic-ui-react';
 import { Diagnosis, HealthCheckEntry } from '../types';
 
 const HealthCheck = ({ entry, diagnosisArray }: {
@@ -37,15 +37,17 @@ const HealthCheck = ({ entry, diagnosisArray }: {
         </p>
       </List.Content>
       {entry.diagnosisCodes && 
-      <List.Content>
-        <span><em>Diagnostic codes:</em></span>
-        <List bulleted={true}>
-          {entry.diagnosisCodes.map(code =>
-          <List.Item key={code}>
-            {code} {diagnosisArray.find(d => d.code === code)?.name}
-            </List.Item>)}
-        </List>
-      </List.Content>
+      <Segment basic>
+        <List.Content style={{marginBottom: '1em'}}>
+          <span><strong>Diagnostic codes:</strong></span>
+          <List bulleted={true}>
+            {entry.diagnosisCodes.map(code =>
+            <List.Item key={code}>
+              {code} {diagnosisArray.find(d => d.code === code)?.name}
+              </List.Item>)}
+          </List>
+        </List.Content>
+      </Segment>
       }
     </List>
     <Divider />
